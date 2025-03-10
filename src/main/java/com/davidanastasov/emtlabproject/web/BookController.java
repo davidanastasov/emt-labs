@@ -57,4 +57,12 @@ public class BookController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @Operation(summary = "Rent a book by its ID", description = "This endpoint allows renting a book if it is available.")
+    @PostMapping("{id}/rent")
+    public ResponseEntity<Book> rentBook(@PathVariable Long id) {
+        return bookService.rent(id)
+                .map(rentedBook -> ResponseEntity.ok().body(rentedBook))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

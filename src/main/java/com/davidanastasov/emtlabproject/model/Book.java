@@ -2,9 +2,11 @@ package com.davidanastasov.emtlabproject.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +21,11 @@ public class Book {
     private Author author;
 
     private Integer availableCopies;
+
+    public Book(String title, Category category, Author author, Integer availableCopies) {
+        this.title = title;
+        this.category = category;
+        this.author = author;
+        this.availableCopies = availableCopies;
+    }
 }

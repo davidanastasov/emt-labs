@@ -15,4 +15,6 @@ public interface BookService {
     Optional<Book> update(Long id, Book book);
 
     void deleteById(Long id);
+
+    Optional<Book> rent(Long id);
 }

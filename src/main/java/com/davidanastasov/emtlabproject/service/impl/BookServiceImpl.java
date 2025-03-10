@@ -39,4 +39,14 @@ public class BookServiceImpl implements BookService {
     public void deleteById(Long id) {
         bookRepository.deleteById(id);
     }
+
+    @Override
+    public Optional<Book> rent(Long id) {
+        return bookRepository.findById(id)
+                .filter(book -> book.getAvailableCopies() > 0)
+                .map(book -> {
+                    book.setAvailableCopies(book.getAvailableCopies() - 1);
+                    return bookRepository.save(book);
+                });
+    }
 }
