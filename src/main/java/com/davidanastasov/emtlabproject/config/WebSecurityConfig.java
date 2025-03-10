@@ -26,29 +26,25 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/api/books")
-                .hasAnyRole(Role.ADMIN.getAuthority(), Role.LIBRARIAN.getAuthority())
-                .requestMatchers(HttpMethod.GET)
-                .permitAll()
-                .anyRequest().hasRole(Role.ADMIN.getAuthority())
-            )
-            .formLogin((form) -> form
-//                    .loginPage("/login")
-                    .permitAll()
-                    .failureUrl("/login?error=BadCredentials")
-                    .defaultSuccessUrl("/api/books", true)
-            )
-            .logout((logout) -> logout
-                    .logoutUrl("/logout")
-                    .clearAuthentication(true)
-                    .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID")
-                    .logoutSuccessUrl("/login")
-            )
-            .exceptionHandling((ex) -> ex
-                    .accessDeniedPage("/access_denied")
-            );
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers(HttpMethod.GET, "api/**").permitAll()
+                        .requestMatchers("/api/books/**").hasAnyRole(Role.ADMIN.getAuthority(), Role.LIBRARIAN.getAuthority())
+                        .requestMatchers("/api/authors/**").hasRole(Role.ADMIN.getAuthority())
+                        .requestMatchers("/api/countries/**").hasRole(Role.ADMIN.getAuthority())
+                        .anyRequest().authenticated()
+                )
+                .formLogin((form) -> form
+                        .permitAll()
+                        .failureUrl("/login?error=BadCredentials")
+                        .defaultSuccessUrl("/swagger-ui/index.html", true)
+                )
+                .logout((logout) -> logout
+                        .logoutUrl("/logout")
+                        .clearAuthentication(true)
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessUrl("/login")
+                );
 
         return http.build();
     }
