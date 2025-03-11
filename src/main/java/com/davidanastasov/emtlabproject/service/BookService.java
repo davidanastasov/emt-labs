@@ -1,6 +1,7 @@
 package com.davidanastasov.emtlabproject.service;
 
 import com.davidanastasov.emtlabproject.model.Book;
+import com.davidanastasov.emtlabproject.model.dto.BookDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +11,9 @@ public interface BookService {
 
     Optional<Book> findById(Long id);
 
-    Optional<Book> save(Book book);
+    Optional<Book> save(BookDTO book);
 
-    Optional<Book> update(Long id, Book book);
+    Optional<Book> update(Long id, BookDTO book);
 
     void deleteById(Long id);
 

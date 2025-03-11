@@ -1,6 +1,7 @@
 package com.davidanastasov.emtlabproject.web;
 
 import com.davidanastasov.emtlabproject.model.Book;
+import com.davidanastasov.emtlabproject.model.dto.BookDTO;
 import com.davidanastasov.emtlabproject.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,15 +34,15 @@ public class BookController {
 
     @Operation(summary = "Create a new book", description = "Saves a new book to the database")
     @PostMapping
-    public ResponseEntity<Book> save(@RequestBody Book book) {
+    public ResponseEntity<Book> save(@RequestBody BookDTO book) {
         return bookService.save(book)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
     @Operation(summary = "Update an existing book", description = "Updates a book's details")
-    @PutMapping("{id}")
-    public ResponseEntity<Book> update(@PathVariable Long id, @RequestBody Book book) {
+    @PatchMapping("{id}")
+    public ResponseEntity<Book> update(@PathVariable Long id, @RequestBody BookDTO book) {
         return bookService.update(id, book)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.notFound().build());

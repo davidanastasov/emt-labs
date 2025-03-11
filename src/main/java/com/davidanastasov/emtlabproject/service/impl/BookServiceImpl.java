@@ -1,6 +1,9 @@
 package com.davidanastasov.emtlabproject.service.impl;
 
+import com.davidanastasov.emtlabproject.model.Author;
 import com.davidanastasov.emtlabproject.model.Book;
+import com.davidanastasov.emtlabproject.model.dto.BookDTO;
+import com.davidanastasov.emtlabproject.repository.AuthorRepository;
 import com.davidanastasov.emtlabproject.repository.BookRepository;
 import com.davidanastasov.emtlabproject.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
 
     @Override
     public List<Book> findAll() {
@@ -26,13 +30,46 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> save(Book book) {
-        return Optional.of(bookRepository.save(book));
+    public Optional<Book> save(BookDTO book) {
+        Optional<Author> author = book.authorId() != null
+                ? authorRepository.findById(book.authorId())
+                : Optional.empty();
+
+        if (author.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(
+                bookRepository.save(new Book(book.name(), book.category(), author.get(), book.availableCopies()))
+        );
     }
 
     @Override
-    public Optional<Book> update(Long id, Book book) {
-        return Optional.of(bookRepository.save(book));
+    public Optional<Book> update(Long id, BookDTO book) {
+        return bookRepository.findById(id)
+                .map(existingBook -> {
+                    if (book.name() != null) {
+                        existingBook.setName(book.name());
+                    }
+
+                    if (book.category() != null) {
+                        existingBook.setCategory(book.category());
+                    }
+
+                    if (book.availableCopies() != null) {
+                        existingBook.setAvailableCopies(book.availableCopies());
+                    }
+
+                    if (book.authorId() != null) {
+                        var author = authorRepository.findById(book.authorId());
+                        if (author.isEmpty()) {
+                            return null;
+                        }
+                        existingBook.setAuthor(author.get());
+                    }
+
+                    return bookRepository.save(existingBook);
+                });
     }
 
     @Override
