@@ -2,6 +2,7 @@ package com.davidanastasov.emtlabproject.web;
 
 import com.davidanastasov.emtlabproject.model.Book;
 import com.davidanastasov.emtlabproject.model.dto.BookDTO;
+import com.davidanastasov.emtlabproject.model.dto.BookRentalDTO;
 import com.davidanastasov.emtlabproject.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -61,9 +62,15 @@ public class BookController {
 
     @Operation(summary = "Rent a book by its ID", description = "This endpoint allows renting a book if it is available.")
     @PostMapping("{id}/rent")
-    public ResponseEntity<Book> rentBook(@PathVariable Long id) {
-        return bookService.rent(id)
+    public ResponseEntity<Book> rentBook(@PathVariable Long id, @RequestBody BookRentalDTO bookRental) {
+        return bookService.rent(id, bookRental)
                 .map(rentedBook -> ResponseEntity.ok().body(rentedBook))
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @Operation(summary = "Get all book rentals by ID", description = "This endpoint returns all the rentals for a given book.")
+    @GetMapping("{id}/rentals")
+    public List<BookRentalDTO> findAllRentalsById(@PathVariable Long id) {
+        return bookService.findRentalsByBookId(id);
     }
 }

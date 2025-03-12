@@ -2,6 +2,7 @@ package com.davidanastasov.emtlabproject.service;
 
 import com.davidanastasov.emtlabproject.model.Book;
 import com.davidanastasov.emtlabproject.model.dto.BookDTO;
+import com.davidanastasov.emtlabproject.model.dto.BookRentalDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,5 +18,7 @@ public interface BookService {
 
     void deleteById(Long id);
 
-    Optional<Book> rent(Long id);
+    Optional<Book> rent(Long id, BookRentalDTO bookRental);
+
+    List<BookRentalDTO> findRentalsByBookId(Long id);
 }

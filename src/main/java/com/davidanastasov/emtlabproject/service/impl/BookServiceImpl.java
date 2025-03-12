@@ -2,8 +2,11 @@ package com.davidanastasov.emtlabproject.service.impl;
 
 import com.davidanastasov.emtlabproject.model.Author;
 import com.davidanastasov.emtlabproject.model.Book;
+import com.davidanastasov.emtlabproject.model.BookRental;
 import com.davidanastasov.emtlabproject.model.dto.BookDTO;
+import com.davidanastasov.emtlabproject.model.dto.BookRentalDTO;
 import com.davidanastasov.emtlabproject.repository.AuthorRepository;
+import com.davidanastasov.emtlabproject.repository.BookRentalRepository;
 import com.davidanastasov.emtlabproject.repository.BookRepository;
 import com.davidanastasov.emtlabproject.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,7 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
+    private final BookRentalRepository bookRentalRepository;
 
     @Override
     public List<Book> findAll() {
@@ -78,12 +82,22 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> rent(Long id) {
+    public Optional<Book> rent(Long id, BookRentalDTO bookRental) {
         return bookRepository.findById(id)
                 .filter(book -> book.getAvailableCopies() > 0)
                 .map(book -> {
                     book.setAvailableCopies(book.getAvailableCopies() - 1);
+                    bookRentalRepository.save(new BookRental(book, bookRental.username()));
                     return bookRepository.save(book);
                 });
+    }
+
+    @Override
+    public List<BookRentalDTO> findRentalsByBookId(Long id) {
+        return bookRentalRepository
+                .findByBookId(id)
+                .stream()
+                .map(book -> new BookRentalDTO(book.getUsername()))
+                .toList();
     }
 }
