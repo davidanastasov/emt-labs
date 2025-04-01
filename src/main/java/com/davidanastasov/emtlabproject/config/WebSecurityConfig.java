@@ -5,15 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -22,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    private final PasswordEncoder passwordEncoder;
+    private final CustomUsernamePasswordAuthenticationProvider authenticationProvider;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -33,37 +30,34 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/books/**").hasAnyRole(Role.ADMIN.getAuthority(), Role.LIBRARIAN.getAuthority())
                         .requestMatchers("/api/authors/**").hasRole(Role.ADMIN.getAuthority())
                         .requestMatchers("/api/countries/**").hasRole(Role.ADMIN.getAuthority())
+                        .requestMatchers("/api/user/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
+                        .loginProcessingUrl("/api/user/login")
                         .permitAll()
-                        .failureUrl("/login?error=BadCredentials")
+                        .failureUrl("/api/user/login?error=BadCredentials")
                         .defaultSuccessUrl("/swagger-ui/index.html", true)
                 )
                 .logout((logout) -> logout
-                        .logoutUrl("/logout")
+                        .logoutUrl("/api/user/logout")
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("/login")
+                        .logoutSuccessUrl("/api/user/login")
+                )
+                .exceptionHandling((ex) -> ex
+                        .accessDeniedPage("/access_denied")
                 );
 
         return http.build();
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("password"))
-                .roles(Role.ADMIN.getAuthority())
-                .build();
-        UserDetails librarian = User.builder()
-                .username("librarian")
-                .password(passwordEncoder.encode("password"))
-                .roles(Role.LIBRARIAN.getAuthority())
-                .build();
-
-        return new InMemoryUserDetailsManager(admin, librarian);
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(
+                AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.authenticationProvider(authenticationProvider);
+        return authenticationManagerBuilder.build();
     }
 }

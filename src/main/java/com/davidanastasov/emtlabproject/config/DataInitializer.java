@@ -3,13 +3,17 @@ package com.davidanastasov.emtlabproject.config;
 import com.davidanastasov.emtlabproject.model.domain.Author;
 import com.davidanastasov.emtlabproject.model.domain.Book;
 import com.davidanastasov.emtlabproject.model.domain.Country;
+import com.davidanastasov.emtlabproject.model.domain.User;
 import com.davidanastasov.emtlabproject.model.enumerations.Category;
 import com.davidanastasov.emtlabproject.model.enumerations.Continent;
+import com.davidanastasov.emtlabproject.model.enumerations.Role;
 import com.davidanastasov.emtlabproject.repository.AuthorRepository;
 import com.davidanastasov.emtlabproject.repository.BookRepository;
 import com.davidanastasov.emtlabproject.repository.CountryRepository;
+import com.davidanastasov.emtlabproject.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,6 +23,8 @@ public class DataInitializer {
     private final CountryRepository countryRepository;
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void init() {
@@ -32,6 +38,22 @@ public class DataInitializer {
 
         // Books
         bookRepository.save(new Book("Romeo and Juliet", Category.CLASSICS, shakespeare, 10));
+
+        // Users
+        userRepository.save(new User(
+                "admin",
+                passwordEncoder.encode("password"),
+                "Admin",
+                "User",
+                Role.ADMIN
+        ));
+
+        userRepository.save(new User(
+                "librarian",
+                passwordEncoder.encode("password"),
+                "Librarian",
+                "User",
+                Role.LIBRARIAN
+        ));
     }
 }
-
