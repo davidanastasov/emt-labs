@@ -1,10 +1,8 @@
-package com.davidanastasov.emtlabproject.service.impl;
+package com.davidanastasov.emtlabproject.service.domain.impl;
 
 import com.davidanastasov.emtlabproject.model.domain.Country;
-import com.davidanastasov.emtlabproject.model.dto.CreateCountryDTO;
-import com.davidanastasov.emtlabproject.model.dto.UpdateCountryDTO;
 import com.davidanastasov.emtlabproject.repository.CountryRepository;
-import com.davidanastasov.emtlabproject.service.CountryService;
+import com.davidanastasov.emtlabproject.service.domain.CountryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,22 +26,20 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public Optional<Country> save(CreateCountryDTO country) {
-        return Optional.of(countryRepository.save(
-                new Country(country.name(), country.continent())
-        ));
+    public Optional<Country> save(Country country) {
+        return Optional.of(countryRepository.save(country));
     }
 
     @Override
-    public Optional<Country> update(Long id, UpdateCountryDTO country) {
+    public Optional<Country> update(Long id, Country country) {
         return countryRepository.findById(id)
                 .map(existingCountry -> {
-                    if (country.name() != null) {
-                        existingCountry.setName(country.name());
+                    if (country.getName() != null) {
+                        existingCountry.setName(country.getName());
                     }
 
-                    if (country.continent() != null) {
-                        existingCountry.setContinent(country.continent());
+                    if (country.getContinent() != null) {
+                        existingCountry.setContinent(country.getContinent());
                     }
 
                     return countryRepository.save(existingCountry);

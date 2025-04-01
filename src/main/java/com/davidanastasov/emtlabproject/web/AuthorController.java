@@ -1,9 +1,9 @@
 package com.davidanastasov.emtlabproject.web;
 
-import com.davidanastasov.emtlabproject.model.domain.Author;
+import com.davidanastasov.emtlabproject.model.dto.AuthorDTO;
 import com.davidanastasov.emtlabproject.model.dto.CreateAuthorDTO;
 import com.davidanastasov.emtlabproject.model.dto.UpdateAuthorDTO;
-import com.davidanastasov.emtlabproject.service.AuthorService;
+import com.davidanastasov.emtlabproject.service.application.AuthorApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,34 +18,34 @@ import java.util.List;
 @Tag(name = "Author Management", description = "API for managing authors") // Swagger Tag
 public class AuthorController {
 
-    private final AuthorService authorService;
+    private final AuthorApplicationService authorApplicationService;
 
     @Operation(summary = "Get all authors", description = "Returns a list of all authors")
     @GetMapping
-    public List<Author> getAllAuthors() {
-        return authorService.findAll();
+    public List<AuthorDTO> getAllAuthors() {
+        return authorApplicationService.findAll();
     }
 
     @Operation(summary = "Get an author by ID", description = "Fetches an author by their unique ID")
     @GetMapping("{id}")
-    public ResponseEntity<Author> getAuthorById(@PathVariable Long id) {
-        return authorService.findById(id)
+    public ResponseEntity<AuthorDTO> getAuthorById(@PathVariable Long id) {
+        return authorApplicationService.findById(id)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Create a new author", description = "Saves a new author to the database")
     @PostMapping
-    public ResponseEntity<Author> save(@RequestBody CreateAuthorDTO author) {
-        return authorService.save(author)
+    public ResponseEntity<AuthorDTO> save(@RequestBody CreateAuthorDTO author) {
+        return authorApplicationService.save(author)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
     @Operation(summary = "Update an existing author", description = "Updates an author's details")
     @PatchMapping("{id}")
-    public ResponseEntity<Author> update(@PathVariable Long id, @RequestBody UpdateAuthorDTO author) {
-        return authorService.update(id, author)
+    public ResponseEntity<AuthorDTO> update(@PathVariable Long id, @RequestBody UpdateAuthorDTO author) {
+        return authorApplicationService.update(id, author)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -53,8 +53,8 @@ public class AuthorController {
     @Operation(summary = "Delete an author by ID", description = "Removes an author from the database")
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteAuthorById(@PathVariable Long id) {
-        if (authorService.findById(id).isPresent()) {
-            authorService.deleteById(id);
+        if (authorApplicationService.findById(id).isPresent()) {
+            authorApplicationService.deleteById(id);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
