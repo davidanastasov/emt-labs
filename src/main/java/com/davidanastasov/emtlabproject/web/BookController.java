@@ -1,8 +1,9 @@
 package com.davidanastasov.emtlabproject.web;
 
 import com.davidanastasov.emtlabproject.model.domain.Book;
-import com.davidanastasov.emtlabproject.model.dto.BookDTO;
 import com.davidanastasov.emtlabproject.model.dto.BookRentalDTO;
+import com.davidanastasov.emtlabproject.model.dto.CreateBookDTO;
+import com.davidanastasov.emtlabproject.model.dto.UpdateBookDTO;
 import com.davidanastasov.emtlabproject.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,7 +36,7 @@ public class BookController {
 
     @Operation(summary = "Create a new book", description = "Saves a new book to the database")
     @PostMapping
-    public ResponseEntity<Book> save(@RequestBody BookDTO book) {
+    public ResponseEntity<Book> save(@RequestBody CreateBookDTO book) {
         return bookService.save(book)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
@@ -43,7 +44,7 @@ public class BookController {
 
     @Operation(summary = "Update an existing book", description = "Updates a book's details")
     @PatchMapping("{id}")
-    public ResponseEntity<Book> update(@PathVariable Long id, @RequestBody BookDTO book) {
+    public ResponseEntity<Book> update(@PathVariable Long id, @RequestBody UpdateBookDTO book) {
         return bookService.update(id, book)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.notFound().build());

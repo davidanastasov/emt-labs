@@ -1,7 +1,8 @@
 package com.davidanastasov.emtlabproject.service.impl;
 
 import com.davidanastasov.emtlabproject.model.domain.Country;
-import com.davidanastasov.emtlabproject.model.dto.CountryDTO;
+import com.davidanastasov.emtlabproject.model.dto.CreateCountryDTO;
+import com.davidanastasov.emtlabproject.model.dto.UpdateCountryDTO;
 import com.davidanastasov.emtlabproject.repository.CountryRepository;
 import com.davidanastasov.emtlabproject.service.CountryService;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +28,14 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public Optional<Country> save(CountryDTO country) {
+    public Optional<Country> save(CreateCountryDTO country) {
         return Optional.of(countryRepository.save(
                 new Country(country.name(), country.continent())
         ));
     }
 
     @Override
-    public Optional<Country> update(Long id, CountryDTO country) {
+    public Optional<Country> update(Long id, UpdateCountryDTO country) {
         return countryRepository.findById(id)
                 .map(existingCountry -> {
                     if (country.name() != null) {

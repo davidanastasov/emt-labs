@@ -2,7 +2,8 @@ package com.davidanastasov.emtlabproject.service;
 
 
 import com.davidanastasov.emtlabproject.model.domain.Author;
-import com.davidanastasov.emtlabproject.model.dto.AuthorDTO;
+import com.davidanastasov.emtlabproject.model.dto.CreateAuthorDTO;
+import com.davidanastasov.emtlabproject.model.dto.UpdateAuthorDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,9 +13,9 @@ public interface AuthorService {
 
     Optional<Author> findById(Long id);
 
-    Optional<Author> save(AuthorDTO author);
+    Optional<Author> save(CreateAuthorDTO author);
 
-    Optional<Author> update(Long id, AuthorDTO author);
+    Optional<Author> update(Long id, UpdateAuthorDTO author);
 
     void deleteById(Long id);
 }

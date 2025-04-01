@@ -1,7 +1,8 @@
 package com.davidanastasov.emtlabproject.web;
 
 import com.davidanastasov.emtlabproject.model.domain.Country;
-import com.davidanastasov.emtlabproject.model.dto.CountryDTO;
+import com.davidanastasov.emtlabproject.model.dto.CreateCountryDTO;
+import com.davidanastasov.emtlabproject.model.dto.UpdateCountryDTO;
 import com.davidanastasov.emtlabproject.service.CountryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,7 +36,7 @@ public class CountryController {
 
     @Operation(summary = "Create a new country", description = "Saves a new country to the database")
     @PostMapping
-    public ResponseEntity<Country> save(@RequestBody CountryDTO country) {
+    public ResponseEntity<Country> save(@RequestBody CreateCountryDTO country) {
         return countryService.save(country)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
@@ -43,7 +44,7 @@ public class CountryController {
 
     @Operation(summary = "Update an existing country", description = "Updates a country's details")
     @PatchMapping("{id}")
-    public ResponseEntity<Country> update(@PathVariable Long id, @RequestBody CountryDTO country) {
+    public ResponseEntity<Country> update(@PathVariable Long id, @RequestBody UpdateCountryDTO country) {
         return countryService.update(id, country)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.notFound().build());

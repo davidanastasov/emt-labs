@@ -1,7 +1,8 @@
 package com.davidanastasov.emtlabproject.web;
 
 import com.davidanastasov.emtlabproject.model.domain.Author;
-import com.davidanastasov.emtlabproject.model.dto.AuthorDTO;
+import com.davidanastasov.emtlabproject.model.dto.CreateAuthorDTO;
+import com.davidanastasov.emtlabproject.model.dto.UpdateAuthorDTO;
 import com.davidanastasov.emtlabproject.service.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,7 +36,7 @@ public class AuthorController {
 
     @Operation(summary = "Create a new author", description = "Saves a new author to the database")
     @PostMapping
-    public ResponseEntity<Author> save(@RequestBody AuthorDTO author) {
+    public ResponseEntity<Author> save(@RequestBody CreateAuthorDTO author) {
         return authorService.save(author)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
@@ -43,7 +44,7 @@ public class AuthorController {
 
     @Operation(summary = "Update an existing author", description = "Updates an author's details")
     @PatchMapping("{id}")
-    public ResponseEntity<Author> update(@PathVariable Long id, @RequestBody AuthorDTO author) {
+    public ResponseEntity<Author> update(@PathVariable Long id, @RequestBody UpdateAuthorDTO author) {
         return authorService.update(id, author)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.notFound().build());

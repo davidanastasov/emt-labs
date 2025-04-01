@@ -3,6 +3,8 @@ package com.davidanastasov.emtlabproject.service.impl;
 import com.davidanastasov.emtlabproject.model.domain.Author;
 import com.davidanastasov.emtlabproject.model.domain.Country;
 import com.davidanastasov.emtlabproject.model.dto.AuthorDTO;
+import com.davidanastasov.emtlabproject.model.dto.CreateAuthorDTO;
+import com.davidanastasov.emtlabproject.model.dto.UpdateAuthorDTO;
 import com.davidanastasov.emtlabproject.repository.AuthorRepository;
 import com.davidanastasov.emtlabproject.repository.CountryRepository;
 import com.davidanastasov.emtlabproject.service.AuthorService;
@@ -30,7 +32,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Optional<Author> save(AuthorDTO author) {
+    public Optional<Author> save(CreateAuthorDTO author) {
         Optional<Country> country = author.countryId() != null
                 ? countryRepository.findById(author.countryId())
                 : Optional.empty();
@@ -45,7 +47,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Optional<Author> update(Long id, AuthorDTO author) {
+    public Optional<Author> update(Long id, UpdateAuthorDTO author) {
         return authorRepository.findById(id)
                 .map(existingAuthor -> {
                     if (author.name() != null) {

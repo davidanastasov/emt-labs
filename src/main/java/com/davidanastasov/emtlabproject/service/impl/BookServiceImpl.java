@@ -3,8 +3,9 @@ package com.davidanastasov.emtlabproject.service.impl;
 import com.davidanastasov.emtlabproject.model.domain.Author;
 import com.davidanastasov.emtlabproject.model.domain.Book;
 import com.davidanastasov.emtlabproject.model.domain.BookRental;
-import com.davidanastasov.emtlabproject.model.dto.BookDTO;
 import com.davidanastasov.emtlabproject.model.dto.BookRentalDTO;
+import com.davidanastasov.emtlabproject.model.dto.CreateBookDTO;
+import com.davidanastasov.emtlabproject.model.dto.UpdateBookDTO;
 import com.davidanastasov.emtlabproject.repository.AuthorRepository;
 import com.davidanastasov.emtlabproject.repository.BookRentalRepository;
 import com.davidanastasov.emtlabproject.repository.BookRepository;
@@ -34,7 +35,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> save(BookDTO book) {
+    public Optional<Book> save(CreateBookDTO book) {
         Optional<Author> author = book.authorId() != null
                 ? authorRepository.findById(book.authorId())
                 : Optional.empty();
@@ -49,7 +50,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> update(Long id, BookDTO book) {
+    public Optional<Book> update(Long id, UpdateBookDTO book) {
         return bookRepository.findById(id)
                 .map(existingBook -> {
                     if (book.name() != null) {
