@@ -1,7 +1,7 @@
 package com.davidanastasov.emtlabproject.service;
 
 
-import com.davidanastasov.emtlabproject.model.Author;
+import com.davidanastasov.emtlabproject.model.domain.Author;
 import com.davidanastasov.emtlabproject.model.dto.AuthorDTO;
 
 import java.util.List;

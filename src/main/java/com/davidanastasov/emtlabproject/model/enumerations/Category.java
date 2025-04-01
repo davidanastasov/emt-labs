@@ -1,4 +1,4 @@
-package com.davidanastasov.emtlabproject.model;
+package com.davidanastasov.emtlabproject.model.enumerations;
 
 public enum Category {
     NOVEL,

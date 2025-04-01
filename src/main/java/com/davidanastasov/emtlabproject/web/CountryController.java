@@ -1,6 +1,6 @@
 package com.davidanastasov.emtlabproject.web;
 
-import com.davidanastasov.emtlabproject.model.Country;
+import com.davidanastasov.emtlabproject.model.domain.Country;
 import com.davidanastasov.emtlabproject.model.dto.CountryDTO;
 import com.davidanastasov.emtlabproject.service.CountryService;
 import io.swagger.v3.oas.annotations.Operation;

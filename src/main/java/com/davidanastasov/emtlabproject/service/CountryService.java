@@ -1,6 +1,6 @@
 package com.davidanastasov.emtlabproject.service;
 
-import com.davidanastasov.emtlabproject.model.Country;
+import com.davidanastasov.emtlabproject.model.domain.Country;
 import com.davidanastasov.emtlabproject.model.dto.CountryDTO;
 
 import java.util.List;

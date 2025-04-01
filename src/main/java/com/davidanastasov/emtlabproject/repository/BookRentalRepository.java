@@ -1,6 +1,6 @@
 package com.davidanastasov.emtlabproject.repository;
 
-import com.davidanastasov.emtlabproject.model.BookRental;
+import com.davidanastasov.emtlabproject.model.domain.BookRental;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

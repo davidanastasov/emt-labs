@@ -1,8 +1,8 @@
 package com.davidanastasov.emtlabproject.service.impl;
 
-import com.davidanastasov.emtlabproject.model.Author;
-import com.davidanastasov.emtlabproject.model.Book;
-import com.davidanastasov.emtlabproject.model.BookRental;
+import com.davidanastasov.emtlabproject.model.domain.Author;
+import com.davidanastasov.emtlabproject.model.domain.Book;
+import com.davidanastasov.emtlabproject.model.domain.BookRental;
 import com.davidanastasov.emtlabproject.model.dto.BookDTO;
 import com.davidanastasov.emtlabproject.model.dto.BookRentalDTO;
 import com.davidanastasov.emtlabproject.repository.AuthorRepository;

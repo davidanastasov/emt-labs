@@ -1,4 +1,4 @@
-package com.davidanastasov.emtlabproject.model;
+package com.davidanastasov.emtlabproject.model.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;

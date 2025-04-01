@@ -1,6 +1,6 @@
 package com.davidanastasov.emtlabproject.model.dto;
 
-import com.davidanastasov.emtlabproject.model.Category;
+import com.davidanastasov.emtlabproject.model.enumerations.Category;
 
 public record BookDTO(
         String name,

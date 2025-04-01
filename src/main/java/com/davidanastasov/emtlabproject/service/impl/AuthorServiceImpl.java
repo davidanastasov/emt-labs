@@ -1,7 +1,7 @@
 package com.davidanastasov.emtlabproject.service.impl;
 
-import com.davidanastasov.emtlabproject.model.Author;
-import com.davidanastasov.emtlabproject.model.Country;
+import com.davidanastasov.emtlabproject.model.domain.Author;
+import com.davidanastasov.emtlabproject.model.domain.Country;
 import com.davidanastasov.emtlabproject.model.dto.AuthorDTO;
 import com.davidanastasov.emtlabproject.repository.AuthorRepository;
 import com.davidanastasov.emtlabproject.repository.CountryRepository;

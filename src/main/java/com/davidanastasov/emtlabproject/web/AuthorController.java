@@ -1,6 +1,6 @@
 package com.davidanastasov.emtlabproject.web;
 
-import com.davidanastasov.emtlabproject.model.Author;
+import com.davidanastasov.emtlabproject.model.domain.Author;
 import com.davidanastasov.emtlabproject.model.dto.AuthorDTO;
 import com.davidanastasov.emtlabproject.service.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;

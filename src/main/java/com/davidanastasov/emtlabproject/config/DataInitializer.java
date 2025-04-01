@@ -1,6 +1,10 @@
 package com.davidanastasov.emtlabproject.config;
 
-import com.davidanastasov.emtlabproject.model.*;
+import com.davidanastasov.emtlabproject.model.domain.Author;
+import com.davidanastasov.emtlabproject.model.domain.Book;
+import com.davidanastasov.emtlabproject.model.domain.Country;
+import com.davidanastasov.emtlabproject.model.enumerations.Category;
+import com.davidanastasov.emtlabproject.model.enumerations.Continent;
 import com.davidanastasov.emtlabproject.repository.AuthorRepository;
 import com.davidanastasov.emtlabproject.repository.BookRepository;
 import com.davidanastasov.emtlabproject.repository.CountryRepository;

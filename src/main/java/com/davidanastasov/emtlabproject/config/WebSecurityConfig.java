@@ -1,6 +1,6 @@
 package com.davidanastasov.emtlabproject.config;
 
-import com.davidanastasov.emtlabproject.model.Role;
+import com.davidanastasov.emtlabproject.model.enumerations.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

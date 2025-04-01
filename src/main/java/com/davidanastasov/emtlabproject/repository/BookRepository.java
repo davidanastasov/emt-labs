@@ -1,6 +1,6 @@
 package com.davidanastasov.emtlabproject.repository;
 
-import com.davidanastasov.emtlabproject.model.Book;
+import com.davidanastasov.emtlabproject.model.domain.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

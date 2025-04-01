@@ -1,5 +1,6 @@
-package com.davidanastasov.emtlabproject.model;
+package com.davidanastasov.emtlabproject.model.domain;
 
+import com.davidanastasov.emtlabproject.model.enumerations.Category;
 import jakarta.persistence.*;
 import lombok.Data;
  import lombok.NoArgsConstructor;
