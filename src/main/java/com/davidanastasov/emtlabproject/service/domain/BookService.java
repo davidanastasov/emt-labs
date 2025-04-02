@@ -1,7 +1,9 @@
 package com.davidanastasov.emtlabproject.service.domain;
 
+import com.davidanastasov.emtlabproject.model.domain.Author;
 import com.davidanastasov.emtlabproject.model.domain.Book;
 import com.davidanastasov.emtlabproject.model.domain.BookRental;
+import com.davidanastasov.emtlabproject.model.domain.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +22,10 @@ public interface BookService {
     Optional<Book> rent(Long id, BookRental bookRental);
 
     List<BookRental> findRentalsByBookId(Long id);
+
+    Optional<Book> findMostRentedBook();
+
+    Optional<Author> findMostRentedAuthor();
+
+    Optional<User> findUserWithMostRentals();
 }

@@ -1,7 +1,9 @@
 package com.davidanastasov.emtlabproject.service.domain.impl;
 
+import com.davidanastasov.emtlabproject.model.domain.Author;
 import com.davidanastasov.emtlabproject.model.domain.Book;
 import com.davidanastasov.emtlabproject.model.domain.BookRental;
+import com.davidanastasov.emtlabproject.model.domain.User;
 import com.davidanastasov.emtlabproject.repository.BookRentalRepository;
 import com.davidanastasov.emtlabproject.repository.BookRepository;
 import com.davidanastasov.emtlabproject.service.domain.BookService;
@@ -76,5 +78,20 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookRental> findRentalsByBookId(Long id) {
         return bookRentalRepository.findByBookId(id);
+    }
+
+    @Override
+    public Optional<Book> findMostRentedBook() {
+        return bookRentalRepository.findMostRentedBook().stream().findFirst();
+    }
+
+    @Override
+    public Optional<Author> findMostRentedAuthor() {
+        return bookRentalRepository.findMostRentedAuthor().stream().findFirst();
+    }
+
+    @Override
+    public Optional<User> findUserWithMostRentals() {
+        return bookRentalRepository.findUserWithMostRentals().stream().findFirst();
     }
 }

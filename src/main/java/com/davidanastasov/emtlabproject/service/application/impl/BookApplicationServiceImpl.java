@@ -1,10 +1,9 @@
 package com.davidanastasov.emtlabproject.service.application.impl;
 
-import com.davidanastasov.emtlabproject.model.dto.BookDTO;
-import com.davidanastasov.emtlabproject.model.dto.BookRentalDTO;
-import com.davidanastasov.emtlabproject.model.dto.CreateBookDTO;
-import com.davidanastasov.emtlabproject.model.dto.UpdateBookDTO;
+import com.davidanastasov.emtlabproject.model.dto.*;
 import com.davidanastasov.emtlabproject.model.exceptions.AuthorNotFoundException;
+import com.davidanastasov.emtlabproject.model.exceptions.BookNotFoundException;
+import com.davidanastasov.emtlabproject.model.exceptions.UserNotFoundException;
 import com.davidanastasov.emtlabproject.service.application.BookApplicationService;
 import com.davidanastasov.emtlabproject.service.domain.AuthorService;
 import com.davidanastasov.emtlabproject.service.domain.BookService;
@@ -57,20 +56,36 @@ public class BookApplicationServiceImpl implements BookApplicationService {
     }
 
     @Override
-    public Optional<BookDTO> rent(Long id, BookRentalDTO bookRental) {
-        var book = bookService.findById(id);
-        var user = userService.findByUsername(bookRental.username());
-        if (book.isEmpty() || user.isEmpty()) {
-            return Optional.empty();
-        }
+    public Optional<BookDTO> rent(Long id, RentBookDTO bookRental) {
+        var book = bookService
+                .findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
+        var user = userService
+                .findByUsername(bookRental.username())
+                .orElseThrow(() -> new UserNotFoundException(bookRental.username()));
 
         return bookService
-                .rent(id, bookRental.toBookRental(book.get(), user.get()))
+                .rent(id, bookRental.toBookRental(book, user))
                 .map(BookDTO::from);
     }
 
     @Override
     public List<BookRentalDTO> findRentalsByBookId(Long id) {
         return BookRentalDTO.from(bookService.findRentalsByBookId(id));
+    }
+
+    @Override
+    public Optional<BookDTO> findMostRentedBook() {
+        return bookService.findMostRentedBook().map(BookDTO::from);
+    }
+
+    @Override
+    public Optional<AuthorDTO> findMostRentedAuthor() {
+        return bookService.findMostRentedAuthor().map(AuthorDTO::from);
+    }
+
+    @Override
+    public Optional<UserDTO> findUserWithMostRentals() {
+        return bookService.findUserWithMostRentals().map(UserDTO::from);
     }
 }

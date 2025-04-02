@@ -1,9 +1,6 @@
 package com.davidanastasov.emtlabproject.service.application;
 
-import com.davidanastasov.emtlabproject.model.dto.BookDTO;
-import com.davidanastasov.emtlabproject.model.dto.BookRentalDTO;
-import com.davidanastasov.emtlabproject.model.dto.CreateBookDTO;
-import com.davidanastasov.emtlabproject.model.dto.UpdateBookDTO;
+import com.davidanastasov.emtlabproject.model.dto.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +16,13 @@ public interface BookApplicationService {
 
     void deleteById(Long id);
 
-    Optional<BookDTO> rent(Long id, BookRentalDTO bookRental);
+    Optional<BookDTO> rent(Long id, RentBookDTO bookRental);
 
     List<BookRentalDTO> findRentalsByBookId(Long id);
+
+    Optional<BookDTO> findMostRentedBook();
+
+    Optional<AuthorDTO> findMostRentedAuthor();
+
+    Optional<UserDTO> findUserWithMostRentals();
 }

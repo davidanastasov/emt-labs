@@ -1,9 +1,6 @@
 package com.davidanastasov.emtlabproject.web;
 
-import com.davidanastasov.emtlabproject.model.dto.BookDTO;
-import com.davidanastasov.emtlabproject.model.dto.BookRentalDTO;
-import com.davidanastasov.emtlabproject.model.dto.CreateBookDTO;
-import com.davidanastasov.emtlabproject.model.dto.UpdateBookDTO;
+import com.davidanastasov.emtlabproject.model.dto.*;
 import com.davidanastasov.emtlabproject.service.application.BookApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -63,7 +60,7 @@ public class BookController {
 
     @Operation(summary = "Rent a book by its ID", description = "This endpoint allows renting a book if it is available.")
     @PostMapping("{id}/rent")
-    public ResponseEntity<BookDTO> rentBook(@PathVariable Long id, @RequestBody BookRentalDTO bookRental) {
+    public ResponseEntity<BookDTO> rentBook(@PathVariable Long id, @RequestBody RentBookDTO bookRental) {
         return bookApplicationService.rent(id, bookRental)
                 .map(rentedBook -> ResponseEntity.ok().body(rentedBook))
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -73,5 +70,26 @@ public class BookController {
     @GetMapping("{id}/rentals")
     public List<BookRentalDTO> findAllRentalsById(@PathVariable Long id) {
         return bookApplicationService.findRentalsByBookId(id);
+    }
+
+    @GetMapping("most-rented-book")
+    public ResponseEntity<BookDTO> getBookWithMostRentals() {
+        return bookApplicationService.findMostRentedBook()
+                .map(ResponseEntity.ok()::body)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("most-rented-author")
+    public ResponseEntity<AuthorDTO> getAuthorWithMostRentals() {
+        return bookApplicationService.findMostRentedAuthor()
+                .map(ResponseEntity.ok()::body)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("most-rentals-user")
+    public ResponseEntity<UserDTO> getUserWithMostRentals() {
+        return bookApplicationService.findUserWithMostRentals()
+                .map(ResponseEntity.ok()::body)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
