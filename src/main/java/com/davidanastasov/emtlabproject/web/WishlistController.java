@@ -37,9 +37,7 @@ public class WishlistController {
     @GetMapping
     public ResponseEntity<WishlistDTO> getActiveWishlist(HttpServletRequest req) {
         String username = req.getRemoteUser();
-        return wishlistApplicationService.getActiveWishlist(username)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(wishlistApplicationService.getActiveWishlist(username));
     }
 
     @Operation(

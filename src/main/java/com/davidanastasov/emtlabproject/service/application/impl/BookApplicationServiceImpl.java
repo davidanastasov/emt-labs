@@ -4,6 +4,7 @@ import com.davidanastasov.emtlabproject.model.dto.BookDTO;
 import com.davidanastasov.emtlabproject.model.dto.BookRentalDTO;
 import com.davidanastasov.emtlabproject.model.dto.CreateBookDTO;
 import com.davidanastasov.emtlabproject.model.dto.UpdateBookDTO;
+import com.davidanastasov.emtlabproject.model.exceptions.AuthorNotFoundException;
 import com.davidanastasov.emtlabproject.service.application.BookApplicationService;
 import com.davidanastasov.emtlabproject.service.domain.AuthorService;
 import com.davidanastasov.emtlabproject.service.domain.BookService;
@@ -34,22 +35,20 @@ public class BookApplicationServiceImpl implements BookApplicationService {
 
     @Override
     public Optional<BookDTO> save(CreateBookDTO book) {
-        var author = authorService.findById(book.authorId());
-        if (author.isEmpty()) {
-            return Optional.empty();
-        }
+        var author = authorService
+                .findById(book.authorId())
+                .orElseThrow(() -> new AuthorNotFoundException(book.authorId()));
 
-        return bookService.save(book.toBook(author.get())).map(BookDTO::from);
+        return bookService.save(book.toBook(author)).map(BookDTO::from);
     }
 
     @Override
     public Optional<BookDTO> update(Long id, UpdateBookDTO book) {
-        var author = authorService.findById(book.authorId());
-        if (author.isEmpty()) {
-            return Optional.empty();
-        }
+        var author = authorService
+                .findById(book.authorId())
+                .orElseThrow(() -> new AuthorNotFoundException(book.authorId()));
 
-        return bookService.update(id, book.toBook(author.get())).map(BookDTO::from);
+        return bookService.update(id, book.toBook(author)).map(BookDTO::from);
     }
 
     @Override

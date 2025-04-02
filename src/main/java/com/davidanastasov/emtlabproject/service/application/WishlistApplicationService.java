@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface WishlistApplicationService {
 
-    Optional<WishlistDTO> getActiveWishlist(String username);
+    WishlistDTO getActiveWishlist(String username);
 
     Optional<WishlistDTO> addBookToWishlist(String username, Long bookId);
 

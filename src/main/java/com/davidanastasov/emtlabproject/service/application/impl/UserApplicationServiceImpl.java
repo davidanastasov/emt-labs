@@ -27,10 +27,4 @@ public class UserApplicationServiceImpl implements UserApplicationService {
         var savedUser = userService.login(user.username(), user.password());
         return Optional.of(UserDTO.from(savedUser));
     }
-
-    @Override
-    public Optional<UserDTO> findByUsername(String username) {
-        var user = userService.findByUsername(username);
-        return user.map(UserDTO::from);
-    }
 }

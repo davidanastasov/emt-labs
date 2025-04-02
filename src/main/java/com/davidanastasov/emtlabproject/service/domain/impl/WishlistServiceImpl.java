@@ -2,6 +2,9 @@ package com.davidanastasov.emtlabproject.service.domain.impl;
 
 import com.davidanastasov.emtlabproject.model.domain.BookRental;
 import com.davidanastasov.emtlabproject.model.domain.Wishlist;
+import com.davidanastasov.emtlabproject.model.exceptions.BookAlreadyInWishlistException;
+import com.davidanastasov.emtlabproject.model.exceptions.BookNotFoundException;
+import com.davidanastasov.emtlabproject.model.exceptions.UserNotFoundException;
 import com.davidanastasov.emtlabproject.repository.WishlistRepository;
 import com.davidanastasov.emtlabproject.service.domain.BookService;
 import com.davidanastasov.emtlabproject.service.domain.UserService;
@@ -21,62 +24,45 @@ public class WishlistServiceImpl implements WishlistService {
     private final BookService bookService;
 
     @Override
-    public Optional<Wishlist> getActiveWishlist(String username) {
-        var user = userService.findByUsername(username);
+    public Wishlist getActiveWishlist(String username) {
+        var user = userService.findByUsername(username).orElseThrow(UserNotFoundException::new);
 
-        if (user.isEmpty()) {
-            return Optional.empty();
-        }
-
-        return Optional.of(wishlistRepository
-                .findByUser(user.get())
-                .orElseGet(() -> wishlistRepository.save(new Wishlist(user.get()))));
+        return (wishlistRepository
+                .findByUser(user)
+                .orElseGet(() -> wishlistRepository.save(new Wishlist(user))));
     }
 
     @Override
     public Optional<Wishlist> addBookToWishlist(String username, Long bookId) {
-        var activeWishlist = getActiveWishlist(username);
+        var wishlist = getActiveWishlist(username);
 
-        if (activeWishlist.isPresent()) {
-            Wishlist wishlist = activeWishlist.get();
+        var book = bookService.findById(bookId).orElseThrow(BookNotFoundException::new);
 
-            var book = bookService.findById(bookId);
+        if (!wishlist.getBooks().stream().filter(i -> i.getId().equals(bookId)).toList().isEmpty())
+            throw new BookAlreadyInWishlistException();
 
-            if (book.isEmpty()) {
-                return Optional.empty();
-            }
-
-            if (!wishlist.getBooks().stream().filter(i -> i.getId().equals(bookId)).toList().isEmpty())
-                return Optional.empty(); // Already exists
-
-            wishlist.getBooks().add(book.get());
-            return Optional.of(wishlistRepository.save(wishlist));
-        }
-        return Optional.empty();
+        wishlist.getBooks().add(book);
+        return Optional.of(wishlistRepository.save(wishlist));
     }
 
     @Override
     public List<BookRental> rentAllBooksFromWishlist(String username) {
-        var user = userService.findByUsername(username);
         var wishlist = getActiveWishlist(username);
+        var user = wishlist.getUser();
 
-        if (wishlist.isEmpty() || user.isEmpty()) {
-            return List.of();
-        }
-
-        if (wishlist.get().getBooks().isEmpty()) {
+        if (wishlist.getBooks().isEmpty()) {
             throw new RuntimeException("Wishlist is empty!");
         }
 
-        var rentals = wishlist.get().getBooks().stream().map(book -> new BookRental(book, user.get())).toList();
+        var rentals = wishlist.getBooks().stream().map(book -> new BookRental(book, user)).toList();
 
         for (var rental : rentals) {
             bookService.rent(rental.getBook().getId(), rental);
         }
 
         // Empty wishlist
-        wishlist.get().getBooks().clear();
-        wishlistRepository.save(wishlist.get());
+        wishlist.getBooks().clear();
+        wishlistRepository.save(wishlist);
 
         return rentals;
     }

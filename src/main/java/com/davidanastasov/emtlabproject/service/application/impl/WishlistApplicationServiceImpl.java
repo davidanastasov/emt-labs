@@ -17,8 +17,8 @@ public class WishlistApplicationServiceImpl implements WishlistApplicationServic
     private final WishlistService wishlistService;
 
     @Override
-    public Optional<WishlistDTO> getActiveWishlist(String username) {
-        return wishlistService.getActiveWishlist(username).map(WishlistDTO::from);
+    public WishlistDTO getActiveWishlist(String username) {
+        return WishlistDTO.from(wishlistService.getActiveWishlist(username));
     }
 
     @Override

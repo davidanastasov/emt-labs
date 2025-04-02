@@ -10,6 +10,4 @@ public interface UserApplicationService {
     Optional<UserDTO> register(CreateUserDTO user);
 
     Optional<UserDTO> login(LoginUserDTO user);
-
-    Optional<UserDTO> findByUsername(String username);
 }
