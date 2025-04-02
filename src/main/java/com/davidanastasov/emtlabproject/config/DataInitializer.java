@@ -55,5 +55,13 @@ public class DataInitializer {
                 "User",
                 Role.LIBRARIAN
         ));
+
+        userRepository.save(new User(
+                "user",
+                passwordEncoder.encode("password"),
+                "John",
+                "Doe",
+                Role.USER
+        ));
     }
 }

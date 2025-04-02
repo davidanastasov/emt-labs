@@ -30,6 +30,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/books/**").hasAnyAuthority(Role.ADMIN.getAuthority(), Role.LIBRARIAN.getAuthority())
                         .requestMatchers("/api/authors/**").hasAuthority(Role.ADMIN.getAuthority())
                         .requestMatchers("/api/countries/**").hasAuthority(Role.ADMIN.getAuthority())
+                        .requestMatchers("/api/wishlist/**").hasAnyAuthority(Role.ADMIN.getAuthority(), Role.USER.getAuthority())
                         .requestMatchers("/api/user/**").permitAll()
                         .anyRequest().authenticated()
                 )
