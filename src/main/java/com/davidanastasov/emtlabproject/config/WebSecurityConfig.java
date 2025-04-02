@@ -27,9 +27,9 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.GET, "api/**").permitAll()
-                        .requestMatchers("/api/books/**").hasAnyRole(Role.ADMIN.getAuthority(), Role.LIBRARIAN.getAuthority())
-                        .requestMatchers("/api/authors/**").hasRole(Role.ADMIN.getAuthority())
-                        .requestMatchers("/api/countries/**").hasRole(Role.ADMIN.getAuthority())
+                        .requestMatchers("/api/books/**").hasAnyAuthority(Role.ADMIN.getAuthority(), Role.LIBRARIAN.getAuthority())
+                        .requestMatchers("/api/authors/**").hasAuthority(Role.ADMIN.getAuthority())
+                        .requestMatchers("/api/countries/**").hasAuthority(Role.ADMIN.getAuthority())
                         .requestMatchers("/api/user/**").permitAll()
                         .anyRequest().authenticated()
                 )
