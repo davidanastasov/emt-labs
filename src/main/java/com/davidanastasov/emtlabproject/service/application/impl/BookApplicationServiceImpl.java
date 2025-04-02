@@ -7,6 +7,7 @@ import com.davidanastasov.emtlabproject.model.dto.UpdateBookDTO;
 import com.davidanastasov.emtlabproject.service.application.BookApplicationService;
 import com.davidanastasov.emtlabproject.service.domain.AuthorService;
 import com.davidanastasov.emtlabproject.service.domain.BookService;
+import com.davidanastasov.emtlabproject.service.domain.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class BookApplicationServiceImpl implements BookApplicationService {
 
     private final BookService bookService;
     private final AuthorService authorService;
+    private final UserService userService;
 
     @Override
     public List<BookDTO> findAll() {
@@ -58,11 +60,14 @@ public class BookApplicationServiceImpl implements BookApplicationService {
     @Override
     public Optional<BookDTO> rent(Long id, BookRentalDTO bookRental) {
         var book = bookService.findById(id);
-        if (book.isEmpty()) {
+        var user = userService.findByUsername(bookRental.username());
+        if (book.isEmpty() || user.isEmpty()) {
             return Optional.empty();
         }
 
-        return bookService.rent(id, bookRental.toBookRental(book.get())).map(BookDTO::from);
+        return bookService
+                .rent(id, bookRental.toBookRental(book.get(), user.get()))
+                .map(BookDTO::from);
     }
 
     @Override

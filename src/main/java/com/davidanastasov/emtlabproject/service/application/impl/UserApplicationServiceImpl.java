@@ -31,6 +31,6 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     @Override
     public Optional<UserDTO> findByUsername(String username) {
         var user = userService.findByUsername(username);
-        return Optional.of(UserDTO.from(user));
+        return user.map(UserDTO::from);
     }
 }

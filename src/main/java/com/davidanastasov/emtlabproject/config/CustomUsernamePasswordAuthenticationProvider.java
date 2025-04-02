@@ -31,7 +31,13 @@ public class CustomUsernamePasswordAuthenticationProvider implements Authenticat
         if ("".equals(username) || "".equals(password)) {
             throw new BadCredentialsException("Invalid Credentials");
         }
-        UserDetails userDetails = userService.findByUsername(username);
+
+        var user = userService.findByUsername(username);
+        if (user.isEmpty()) {
+            throw new BadCredentialsException("Invalid Credentials");
+        }
+
+        UserDetails userDetails = user.get();
 
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException("Password is incorrect!");

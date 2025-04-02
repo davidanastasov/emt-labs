@@ -4,22 +4,26 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Entity
 @NoArgsConstructor
-public class BookRental {
+public class Wishlist {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Book book;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    public BookRental(Book book, User user) {
-        this.book = book;
+    @ManyToMany
+    private List<Book> books;
+
+    public Wishlist(User user) {
         this.user = user;
+        this.books = new ArrayList<>();
     }
 }
