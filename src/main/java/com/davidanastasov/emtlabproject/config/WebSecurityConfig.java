@@ -26,7 +26,7 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.GET, "api/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                         .requestMatchers("/api/books/**").hasAnyAuthority(Role.ADMIN.getAuthority(), Role.LIBRARIAN.getAuthority())
                         .requestMatchers("/api/authors/**").hasAuthority(Role.ADMIN.getAuthority())
                         .requestMatchers("/api/countries/**").hasAuthority(Role.ADMIN.getAuthority())
@@ -45,9 +45,6 @@ public class WebSecurityConfig {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl("/api/user/login")
-                )
-                .exceptionHandling((ex) -> ex
-                        .accessDeniedPage("/access_denied")
                 );
 
         return http.build();
