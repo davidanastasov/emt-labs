@@ -1,6 +1,6 @@
 # ЕМТ Лабораториски 2025
 
-Код од аудиториски вежби: [https://gitlab.com/finki.emt/emt-2025](https://gitlab.com/finki.emt/emt-2025)
+Код од аудиториски вежби: [https://gitlab.finki.ukim.mk/emc/emc-2025](https://gitlab.finki.ukim.mk/emc/emc-2025)
 
 ## Лаб 01
 

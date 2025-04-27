@@ -28,6 +28,10 @@ public class DataInitializer {
 
     @PostConstruct
     public void init() {
+        if (countryRepository.count() > 0) {
+            return;
+        }
+
         // Countries
         countryRepository.save(new Country("Macedonia", Continent.EUROPE));
         var uk = countryRepository.save(new Country("United Kingdom", Continent.EUROPE));
