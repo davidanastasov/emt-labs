@@ -1,5 +1,6 @@
 package com.davidanastasov.emtlabproject.service.application.impl;
 
+import com.davidanastasov.emtlabproject.model.domain.User;
 import com.davidanastasov.emtlabproject.model.dto.CreateUserDTO;
 import com.davidanastasov.emtlabproject.model.dto.LoginUserDTO;
 import com.davidanastasov.emtlabproject.model.dto.UserDTO;
@@ -8,6 +9,7 @@ import com.davidanastasov.emtlabproject.service.domain.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,6 +17,11 @@ import java.util.Optional;
 public class UserApplicationServiceImpl implements UserApplicationService {
 
     private final UserService userService;
+
+    @Override
+    public List<UserDTO> fetchAll() {
+        return UserDTO.from(userService.fetchAll());
+    }
 
     @Override
     public Optional<UserDTO> register(CreateUserDTO user) {

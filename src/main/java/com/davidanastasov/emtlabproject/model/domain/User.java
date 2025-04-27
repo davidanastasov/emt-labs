@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Data
 @Entity
@@ -26,6 +27,9 @@ public class User implements UserDetails {
     private String name;
 
     private String surname;
+
+    @OneToMany(mappedBy = "user")
+    private List<Wishlist> wishlists;
 
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;

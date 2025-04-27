@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +20,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public List<User> fetchAll() {
+        return userRepository.fetchAll();
+    }
 
     @Override
     public User register(String username, String password, String name, String surname, Role role) {

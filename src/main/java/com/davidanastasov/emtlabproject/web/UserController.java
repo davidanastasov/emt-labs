@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/user")
 @Tag(name = "User API", description = "Endpoints for user authentication and registration") // Swagger tag
@@ -21,6 +23,15 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserApplicationService userApplicationService;
+
+    @Operation(
+            summary = "Fetch all users",
+            description = "Retrieves a list of all users."
+    )
+    @GetMapping("/fetch")
+    public List<UserDTO> fetchAll() {
+        return userApplicationService.fetchAll();
+    }
 
     @Operation(summary = "Register a new user", description = "Creates a new user account")
     @ApiResponses(
