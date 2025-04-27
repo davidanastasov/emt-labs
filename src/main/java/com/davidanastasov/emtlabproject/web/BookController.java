@@ -31,6 +31,10 @@ public class BookController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(
+            summary = "Get book counts per author",
+            description = "Retrieves a list of authors along with the number of books they have authored."
+    )
     @GetMapping("by-author")
     public List<BookCountsPerAuthorDTO> getBookCountsPerAuthor() {
         return bookApplicationService.getBookCountsPerAuthor();

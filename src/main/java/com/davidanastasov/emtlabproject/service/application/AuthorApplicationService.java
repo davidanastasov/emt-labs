@@ -1,5 +1,6 @@
 package com.davidanastasov.emtlabproject.service.application;
 
+import com.davidanastasov.emtlabproject.model.dto.AuthorCountsPerCountryDTO;
 import com.davidanastasov.emtlabproject.model.dto.AuthorDTO;
 import com.davidanastasov.emtlabproject.model.dto.CreateAuthorDTO;
 import com.davidanastasov.emtlabproject.model.dto.UpdateAuthorDTO;
@@ -17,4 +18,6 @@ public interface AuthorApplicationService {
     Optional<AuthorDTO> update(Long id, UpdateAuthorDTO author);
 
     void deleteById(Long id);
+
+    List<AuthorCountsPerCountryDTO> getAuthorCountsPerCountry();
 }

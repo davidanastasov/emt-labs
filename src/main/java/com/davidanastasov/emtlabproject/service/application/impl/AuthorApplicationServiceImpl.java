@@ -1,5 +1,6 @@
 package com.davidanastasov.emtlabproject.service.application.impl;
 
+import com.davidanastasov.emtlabproject.model.dto.AuthorCountsPerCountryDTO;
 import com.davidanastasov.emtlabproject.model.dto.AuthorDTO;
 import com.davidanastasov.emtlabproject.model.dto.CreateAuthorDTO;
 import com.davidanastasov.emtlabproject.model.dto.UpdateAuthorDTO;
@@ -50,5 +51,10 @@ public class AuthorApplicationServiceImpl implements AuthorApplicationService {
     @Override
     public void deleteById(Long id) {
         authorService.deleteById(id);
+    }
+
+    @Override
+    public List<AuthorCountsPerCountryDTO> getAuthorCountsPerCountry() {
+        return AuthorCountsPerCountryDTO.from(authorService.getAuthorCountsPerCountry());
     }
 }

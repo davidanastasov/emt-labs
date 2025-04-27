@@ -1,8 +1,6 @@
 package com.davidanastasov.emtlabproject.web;
 
-import com.davidanastasov.emtlabproject.model.dto.AuthorDTO;
-import com.davidanastasov.emtlabproject.model.dto.CreateAuthorDTO;
-import com.davidanastasov.emtlabproject.model.dto.UpdateAuthorDTO;
+import com.davidanastasov.emtlabproject.model.dto.*;
 import com.davidanastasov.emtlabproject.service.application.AuthorApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,6 +30,15 @@ public class AuthorController {
         return authorApplicationService.findById(id)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Operation(
+            summary = "Get author counts per country",
+            description = "Retrieves a list showing the number of authors grouped by their country."
+    )
+    @GetMapping("by-country")
+    public List<AuthorCountsPerCountryDTO> getAuthorCountsPerCountry() {
+        return authorApplicationService.getAuthorCountsPerCountry();
     }
 
     @Operation(summary = "Create a new author", description = "Saves a new author to the database")
