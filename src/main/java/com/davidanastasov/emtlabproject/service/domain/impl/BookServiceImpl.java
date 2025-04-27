@@ -4,8 +4,10 @@ import com.davidanastasov.emtlabproject.model.domain.Author;
 import com.davidanastasov.emtlabproject.model.domain.Book;
 import com.davidanastasov.emtlabproject.model.domain.BookRental;
 import com.davidanastasov.emtlabproject.model.domain.User;
+import com.davidanastasov.emtlabproject.model.views.BooksPerAuthorView;
 import com.davidanastasov.emtlabproject.repository.BookRentalRepository;
 import com.davidanastasov.emtlabproject.repository.BookRepository;
+import com.davidanastasov.emtlabproject.repository.BooksPerAuthorViewRepository;
 import com.davidanastasov.emtlabproject.service.domain.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
     private final BookRentalRepository bookRentalRepository;
+    private final BooksPerAuthorViewRepository booksPerAuthorViewRepository;
 
     @Override
     public List<Book> findAll() {
@@ -93,5 +96,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public Optional<User> findUserWithMostRentals() {
         return bookRentalRepository.findUserWithMostRentals().stream().findFirst();
+    }
+
+    @Override
+    public List<BooksPerAuthorView> getBookCountsPerAuthor() {
+        return booksPerAuthorViewRepository.findAll();
+    }
+
+    @Override
+    public void refreshMaterializedView() {
+        booksPerAuthorViewRepository.refreshMaterializedView();
     }
 }

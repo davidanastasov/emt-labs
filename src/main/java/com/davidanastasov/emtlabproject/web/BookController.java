@@ -31,6 +31,11 @@ public class BookController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("by-author")
+    public List<BookCountsPerAuthorDTO> getBookCountsPerAuthor() {
+        return bookApplicationService.getBookCountsPerAuthor();
+    }
+
     @Operation(summary = "Create a new book", description = "Saves a new book to the database")
     @PostMapping
     public ResponseEntity<BookDTO> save(@RequestBody CreateBookDTO book) {

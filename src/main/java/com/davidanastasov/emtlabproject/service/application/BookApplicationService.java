@@ -25,4 +25,6 @@ public interface BookApplicationService {
     Optional<AuthorDTO> findMostRentedAuthor();
 
     Optional<UserDTO> findUserWithMostRentals();
+
+    List<BookCountsPerAuthorDTO> getBookCountsPerAuthor();
 }

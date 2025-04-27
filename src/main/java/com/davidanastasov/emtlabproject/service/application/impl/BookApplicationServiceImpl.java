@@ -88,4 +88,9 @@ public class BookApplicationServiceImpl implements BookApplicationService {
     public Optional<UserDTO> findUserWithMostRentals() {
         return bookService.findUserWithMostRentals().map(UserDTO::from);
     }
+
+    @Override
+    public List<BookCountsPerAuthorDTO> getBookCountsPerAuthor() {
+        return BookCountsPerAuthorDTO.from(bookService.getBookCountsPerAuthor());
+    }
 }

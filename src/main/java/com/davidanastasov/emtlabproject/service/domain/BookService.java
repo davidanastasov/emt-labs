@@ -4,6 +4,7 @@ import com.davidanastasov.emtlabproject.model.domain.Author;
 import com.davidanastasov.emtlabproject.model.domain.Book;
 import com.davidanastasov.emtlabproject.model.domain.BookRental;
 import com.davidanastasov.emtlabproject.model.domain.User;
+import com.davidanastasov.emtlabproject.model.views.BooksPerAuthorView;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,4 +29,8 @@ public interface BookService {
     Optional<Author> findMostRentedAuthor();
 
     Optional<User> findUserWithMostRentals();
+
+    List<BooksPerAuthorView> getBookCountsPerAuthor();
+
+    void refreshMaterializedView();
 }
