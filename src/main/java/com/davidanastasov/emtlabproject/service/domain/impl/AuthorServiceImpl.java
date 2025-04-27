@@ -4,6 +4,7 @@ import com.davidanastasov.emtlabproject.events.AuthorCreatedEvent;
 import com.davidanastasov.emtlabproject.events.AuthorDeletedEvent;
 import com.davidanastasov.emtlabproject.events.AuthorEditedEvent;
 import com.davidanastasov.emtlabproject.model.domain.Author;
+import com.davidanastasov.emtlabproject.model.projections.AuthorNameProjection;
 import com.davidanastasov.emtlabproject.model.views.AuthorsPerCountryView;
 import com.davidanastasov.emtlabproject.repository.AuthorRepository;
 import com.davidanastasov.emtlabproject.repository.AuthorsPerCountryViewRepository;
@@ -75,6 +76,11 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<AuthorsPerCountryView> getAuthorCountsPerCountry() {
         return authorsPerCountryViewRepository.findAll();
+    }
+
+    @Override
+    public List<AuthorNameProjection> getAuthorNames() {
+        return authorRepository.takeNameAndSurnameByProjection();
     }
 
     @Override

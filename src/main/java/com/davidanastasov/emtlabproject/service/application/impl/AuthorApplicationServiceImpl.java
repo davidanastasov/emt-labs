@@ -1,9 +1,6 @@
 package com.davidanastasov.emtlabproject.service.application.impl;
 
-import com.davidanastasov.emtlabproject.model.dto.AuthorCountsPerCountryDTO;
-import com.davidanastasov.emtlabproject.model.dto.AuthorDTO;
-import com.davidanastasov.emtlabproject.model.dto.CreateAuthorDTO;
-import com.davidanastasov.emtlabproject.model.dto.UpdateAuthorDTO;
+import com.davidanastasov.emtlabproject.model.dto.*;
 import com.davidanastasov.emtlabproject.model.exceptions.CountryNotFoundException;
 import com.davidanastasov.emtlabproject.service.application.AuthorApplicationService;
 import com.davidanastasov.emtlabproject.service.domain.AuthorService;
@@ -56,5 +53,10 @@ public class AuthorApplicationServiceImpl implements AuthorApplicationService {
     @Override
     public List<AuthorCountsPerCountryDTO> getAuthorCountsPerCountry() {
         return AuthorCountsPerCountryDTO.from(authorService.getAuthorCountsPerCountry());
+    }
+
+    @Override
+    public List<AuthorNameDTO> getAuthorNames() {
+        return AuthorNameDTO.from(authorService.getAuthorNames());
     }
 }

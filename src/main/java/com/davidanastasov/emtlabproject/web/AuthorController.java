@@ -41,6 +41,15 @@ public class AuthorController {
         return authorApplicationService.getAuthorCountsPerCountry();
     }
 
+    @Operation(
+            summary = "Get all author names",
+            description = "Retrieves a list of all authors' names."
+    )
+    @GetMapping("names")
+    public List<AuthorNameDTO> getAuthorNames() {
+        return authorApplicationService.getAuthorNames();
+    }
+
     @Operation(summary = "Create a new author", description = "Saves a new author to the database")
     @PostMapping
     public ResponseEntity<AuthorDTO> save(@RequestBody CreateAuthorDTO author) {

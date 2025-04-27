@@ -1,6 +1,7 @@
 package com.davidanastasov.emtlabproject.service.domain;
 
 import com.davidanastasov.emtlabproject.model.domain.Author;
+import com.davidanastasov.emtlabproject.model.projections.AuthorNameProjection;
 import com.davidanastasov.emtlabproject.model.views.AuthorsPerCountryView;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public interface AuthorService {
     void deleteById(Long id);
 
     List<AuthorsPerCountryView> getAuthorCountsPerCountry();
+
+    List<AuthorNameProjection> getAuthorNames();
 
     void refreshMaterializedView();
 }
