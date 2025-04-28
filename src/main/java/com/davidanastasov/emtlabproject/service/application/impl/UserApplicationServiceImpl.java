@@ -2,8 +2,10 @@ package com.davidanastasov.emtlabproject.service.application.impl;
 
 import com.davidanastasov.emtlabproject.model.domain.User;
 import com.davidanastasov.emtlabproject.model.dto.CreateUserDTO;
+import com.davidanastasov.emtlabproject.model.dto.LoginResponseDTO;
 import com.davidanastasov.emtlabproject.model.dto.LoginUserDTO;
 import com.davidanastasov.emtlabproject.model.dto.UserDTO;
+import com.davidanastasov.emtlabproject.security.JwtHelper;
 import com.davidanastasov.emtlabproject.service.application.UserApplicationService;
 import com.davidanastasov.emtlabproject.service.domain.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.Optional;
 public class UserApplicationServiceImpl implements UserApplicationService {
 
     private final UserService userService;
+    private final JwtHelper jwtHelper;
 
     @Override
     public List<UserDTO> fetchAll() {
@@ -30,7 +33,19 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     }
 
     @Override
-    public Optional<UserDTO> login(LoginUserDTO user) {
+    public Optional<LoginResponseDTO> loginToken(LoginUserDTO loginUserDTO) {
+        User user = userService.login(
+                loginUserDTO.username(),
+                loginUserDTO.password()
+        );
+
+        String token = jwtHelper.generateToken(user);
+
+        return Optional.of(new LoginResponseDTO(token));
+    }
+
+    @Override
+    public Optional<UserDTO> loginUser(LoginUserDTO user) {
         var savedUser = userService.login(user.username(), user.password());
         return Optional.of(UserDTO.from(savedUser));
     }

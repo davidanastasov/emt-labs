@@ -1,5 +1,6 @@
 package com.davidanastasov.emtlabproject.service.application.impl;
 
+import com.davidanastasov.emtlabproject.model.domain.BookRental;
 import com.davidanastasov.emtlabproject.model.dto.*;
 import com.davidanastasov.emtlabproject.model.exceptions.AuthorNotFoundException;
 import com.davidanastasov.emtlabproject.model.exceptions.BookNotFoundException;
@@ -56,16 +57,16 @@ public class BookApplicationServiceImpl implements BookApplicationService {
     }
 
     @Override
-    public Optional<BookDTO> rent(Long id, RentBookDTO bookRental) {
+    public Optional<BookDTO> rent(Long id, String username) {
         var book = bookService
                 .findById(id)
                 .orElseThrow(() -> new BookNotFoundException(id));
         var user = userService
-                .findByUsername(bookRental.username())
-                .orElseThrow(() -> new UserNotFoundException(bookRental.username()));
+                .findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
 
         return bookService
-                .rent(id, bookRental.toBookRental(book, user))
+                .rent(id, new BookRental(book, user))
                 .map(BookDTO::from);
     }
 

@@ -1,9 +1,10 @@
-package com.davidanastasov.emtlabproject.config;
+package com.davidanastasov.emtlabproject.security;
 
 import com.davidanastasov.emtlabproject.model.enumerations.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
+@Profile("test")
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -26,18 +28,18 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/user/**").permitAll()
                         .requestMatchers("/api/books/**").hasAnyAuthority(Role.ADMIN.getAuthority(), Role.LIBRARIAN.getAuthority())
                         .requestMatchers("/api/authors/**").hasAuthority(Role.ADMIN.getAuthority())
                         .requestMatchers("/api/countries/**").hasAuthority(Role.ADMIN.getAuthority())
                         .requestMatchers("/api/wishlist/**").hasAnyAuthority(Role.ADMIN.getAuthority(), Role.USER.getAuthority())
-                        .requestMatchers("/api/user/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
-                        .loginProcessingUrl("/api/user/login")
+                        .loginProcessingUrl("/api/user/login-form")
                         .permitAll()
-                        .failureUrl("/api/user/login?error=BadCredentials")
+                        .failureUrl("/api/user/login-form?error=BadCredentials")
                         .defaultSuccessUrl("/swagger-ui/index.html", true)
                 )
                 .logout((logout) -> logout
@@ -45,7 +47,7 @@ public class WebSecurityConfig {
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("/api/user/login")
+                        .logoutSuccessUrl("/api/user/login-form")
                 );
 
         return http.build();

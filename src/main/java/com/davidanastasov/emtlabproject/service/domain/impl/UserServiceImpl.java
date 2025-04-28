@@ -4,6 +4,7 @@ import com.davidanastasov.emtlabproject.model.domain.User;
 import com.davidanastasov.emtlabproject.model.enumerations.Role;
 import com.davidanastasov.emtlabproject.model.exceptions.InvalidArgumentsException;
 import com.davidanastasov.emtlabproject.model.exceptions.InvalidUsernameOrPasswordException;
+import com.davidanastasov.emtlabproject.model.exceptions.UserNotFoundException;
 import com.davidanastasov.emtlabproject.model.exceptions.UsernameAlreadyExistsException;
 import com.davidanastasov.emtlabproject.repository.UserRepository;
 import com.davidanastasov.emtlabproject.service.domain.UserService;
@@ -45,10 +46,14 @@ public class UserServiceImpl implements UserService {
             throw new InvalidArgumentsException();
         }
 
-        var passwordHash = passwordEncoder.encode(password);
-        return userRepository
-                .findByUsernameAndPassword(username, passwordHash)
-                .orElseThrow(InvalidUsernameOrPasswordException::new);
+        User user = userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
+
+        if (!passwordEncoder.matches(password, user.getPassword()))
+            throw new InvalidUsernameOrPasswordException();
+
+        return user;
     }
 
     @Override

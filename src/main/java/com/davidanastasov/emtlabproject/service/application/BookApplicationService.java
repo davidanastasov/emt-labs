@@ -16,7 +16,7 @@ public interface BookApplicationService {
 
     void deleteById(Long id);
 
-    Optional<BookDTO> rent(Long id, RentBookDTO bookRental);
+    Optional<BookDTO> rent(Long id, String username);
 
     List<BookRentalDTO> findRentalsByBookId(Long id);
 

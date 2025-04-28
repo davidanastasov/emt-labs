@@ -1,6 +1,7 @@
 package com.davidanastasov.emtlabproject.service.application;
 
 import com.davidanastasov.emtlabproject.model.dto.CreateUserDTO;
+import com.davidanastasov.emtlabproject.model.dto.LoginResponseDTO;
 import com.davidanastasov.emtlabproject.model.dto.LoginUserDTO;
 import com.davidanastasov.emtlabproject.model.dto.UserDTO;
 
@@ -12,5 +13,7 @@ public interface UserApplicationService {
 
     Optional<UserDTO> register(CreateUserDTO user);
 
-    Optional<UserDTO> login(LoginUserDTO user);
+    Optional<LoginResponseDTO> loginToken(LoginUserDTO user);
+
+    Optional<UserDTO> loginUser(LoginUserDTO user);
 }

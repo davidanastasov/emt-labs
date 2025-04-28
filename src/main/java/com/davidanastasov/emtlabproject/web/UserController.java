@@ -1,6 +1,7 @@
 package com.davidanastasov.emtlabproject.web;
 
 import com.davidanastasov.emtlabproject.model.dto.CreateUserDTO;
+import com.davidanastasov.emtlabproject.model.dto.LoginResponseDTO;
 import com.davidanastasov.emtlabproject.model.dto.LoginUserDTO;
 import com.davidanastasov.emtlabproject.model.dto.UserDTO;
 import com.davidanastasov.emtlabproject.model.exceptions.InvalidUsernameOrPasswordException;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,9 +60,27 @@ public class UserController {
             ), @ApiResponse(responseCode = "401", description = "Invalid username or password")}
     )
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> login(HttpServletRequest request) {
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginUserDTO loginUserDTO) {
+        try {
+            return userApplicationService.loginToken(loginUserDTO)
+                    .map(ResponseEntity::ok)
+                    .orElseThrow(InvalidUsernameOrPasswordException::new);
+        } catch (InvalidUsernameOrPasswordException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @Operation(summary = "User login", description = "Authenticates a user and starts a session")
+    @ApiResponses(
+            value = {@ApiResponse(
+                    responseCode = "200",
+                    description = "User authenticated successfully"
+            ), @ApiResponse(responseCode = "401", description = "Invalid username or password")}
+    )
+    @PostMapping("/login-form")
+    public ResponseEntity<UserDTO> loginForm(HttpServletRequest request) {
         UserDTO displayUserDto = userApplicationService
-                .login(new LoginUserDTO(request.getParameter("username"), request.getParameter("password")))
+                .loginUser(new LoginUserDTO(request.getParameter("username"), request.getParameter("password")))
                 .orElseThrow(InvalidUsernameOrPasswordException::new);
 
         request.getSession().setAttribute("user", displayUserDto.toUser());

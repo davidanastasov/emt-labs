@@ -1,4 +1,4 @@
-package com.davidanastasov.emtlabproject.config;
+package com.davidanastasov.emtlabproject.security;
 
 import com.davidanastasov.emtlabproject.service.domain.UserService;
 import org.springframework.security.authentication.AuthenticationProvider;

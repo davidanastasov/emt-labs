@@ -1,11 +1,13 @@
 package com.davidanastasov.emtlabproject.web;
 
+import com.davidanastasov.emtlabproject.model.domain.User;
 import com.davidanastasov.emtlabproject.model.dto.*;
 import com.davidanastasov.emtlabproject.service.application.BookApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -69,10 +71,15 @@ public class BookController {
 
     @Operation(summary = "Rent a book by its ID", description = "This endpoint allows renting a book if it is available.")
     @PostMapping("{id}/rent")
-    public ResponseEntity<BookDTO> rentBook(@PathVariable Long id, @RequestBody RentBookDTO bookRental) {
-        return bookApplicationService.rent(id, bookRental)
-                .map(rentedBook -> ResponseEntity.ok().body(rentedBook))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<BookDTO> rentBook(@PathVariable Long id, Authentication authentication) {
+        try {
+            User user = (User) authentication.getPrincipal();
+            return bookApplicationService.rent(id, user.getUsername())
+                    .map(rentedBook -> ResponseEntity.ok().body(rentedBook))
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        } catch (RuntimeException exception) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @Operation(summary = "Get all book rentals by ID", description = "This endpoint returns all the rentals for a given book.")
