@@ -8,11 +8,12 @@ public record AuthorDTO(
         Long id,
         String name,
         String surname,
-        Long countryId
+        CountryDTO country
 ) {
 
     public static AuthorDTO from(Author author) {
-        return new AuthorDTO(author.getId(), author.getName(), author.getSurname(), author.getCountry().getId());
+        var countryDTO = CountryDTO.from(author.getCountry());
+        return new AuthorDTO(author.getId(), author.getName(), author.getSurname(), countryDTO);
     }
 
     public static List<AuthorDTO> from(List<Author> countries) {
