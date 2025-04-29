@@ -27,7 +27,17 @@ public class WishlistApplicationServiceImpl implements WishlistApplicationServic
     }
 
     @Override
+    public Optional<WishlistDTO> removeBookFromWishlist(String username, Long bookId) {
+        return wishlistService.removeBookFromWishlist(username, bookId).map(WishlistDTO::from);
+    }
+
+    @Override
     public List<BookRentalDTO> rentAllBooksFromWishlist(String username) {
         return BookRentalDTO.from(wishlistService.rentAllBooksFromWishlist(username));
+    }
+
+    @Override
+    public void clearWishlist(String username) {
+        wishlistService.clearWishlist(username);
     }
 }

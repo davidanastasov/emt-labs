@@ -12,6 +12,10 @@ public interface WishlistService {
 
     Optional<Wishlist> addBookToWishlist(String username, Long bookId);
 
+    Optional<Wishlist> removeBookFromWishlist(String username, Long bookId);
+
     List<BookRental> rentAllBooksFromWishlist(String username);
+
+    void clearWishlist(String username);
 }
 

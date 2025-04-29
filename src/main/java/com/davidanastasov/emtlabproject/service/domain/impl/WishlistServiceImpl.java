@@ -2,9 +2,7 @@ package com.davidanastasov.emtlabproject.service.domain.impl;
 
 import com.davidanastasov.emtlabproject.model.domain.BookRental;
 import com.davidanastasov.emtlabproject.model.domain.Wishlist;
-import com.davidanastasov.emtlabproject.model.exceptions.BookAlreadyInWishlistException;
-import com.davidanastasov.emtlabproject.model.exceptions.BookNotFoundException;
-import com.davidanastasov.emtlabproject.model.exceptions.UserNotFoundException;
+import com.davidanastasov.emtlabproject.model.exceptions.*;
 import com.davidanastasov.emtlabproject.repository.WishlistRepository;
 import com.davidanastasov.emtlabproject.service.domain.BookService;
 import com.davidanastasov.emtlabproject.service.domain.UserService;
@@ -46,6 +44,19 @@ public class WishlistServiceImpl implements WishlistService {
     }
 
     @Override
+    public Optional<Wishlist> removeBookFromWishlist(String username, Long bookId) {
+        var wishlist = getActiveWishlist(username);
+
+        var book = bookService.findById(bookId).orElseThrow(BookNotFoundException::new);
+
+        if (!wishlist.getBooks().contains(book))
+            throw new BookNotInWishlistException();
+
+        wishlist.getBooks().remove(book);
+        return Optional.of(wishlistRepository.save(wishlist));
+    }
+
+    @Override
     public List<BookRental> rentAllBooksFromWishlist(String username) {
         var wishlist = getActiveWishlist(username);
         var user = wishlist.getUser();
@@ -65,5 +76,15 @@ public class WishlistServiceImpl implements WishlistService {
         wishlistRepository.save(wishlist);
 
         return rentals;
+    }
+
+    @Override
+    public void clearWishlist(String username) {
+        var wishlist = getActiveWishlist(username);
+
+        if (wishlist.getBooks().isEmpty())
+            throw new EmptyWishlistException();
+
+        wishlistRepository.delete(wishlist);
     }
 }

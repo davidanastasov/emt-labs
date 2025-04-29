@@ -12,5 +12,9 @@ public interface WishlistApplicationService {
 
     Optional<WishlistDTO> addBookToWishlist(String username, Long bookId);
 
+    Optional<WishlistDTO> removeBookFromWishlist(String username, Long bookId);
+
     List<BookRentalDTO> rentAllBooksFromWishlist(String username);
+
+    void clearWishlist(String username);
 }
