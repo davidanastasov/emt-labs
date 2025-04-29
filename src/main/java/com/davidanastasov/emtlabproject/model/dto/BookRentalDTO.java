@@ -7,8 +7,9 @@ import com.davidanastasov.emtlabproject.model.domain.User;
 import java.util.List;
 
 public record BookRentalDTO(
+        Long id,
         String username,
-        String bookName
+        BookDTO book
 ) {
 
     public BookRental toBookRental(Book book, User user) {
@@ -16,7 +17,11 @@ public record BookRentalDTO(
     }
 
     public static BookRentalDTO from(BookRental bookRental) {
-        return new BookRentalDTO(bookRental.getUser().getUsername(), bookRental.getBook().getName());
+        return new BookRentalDTO(
+                bookRental.getId(),
+                bookRental.getUser().getUsername(),
+                BookDTO.from(bookRental.getBook())
+        );
     }
 
     public static List<BookRentalDTO> from(List<BookRental> bookRentals) {

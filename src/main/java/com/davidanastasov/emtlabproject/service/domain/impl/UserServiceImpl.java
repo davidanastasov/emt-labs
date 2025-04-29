@@ -1,11 +1,13 @@
 package com.davidanastasov.emtlabproject.service.domain.impl;
 
+import com.davidanastasov.emtlabproject.model.domain.BookRental;
 import com.davidanastasov.emtlabproject.model.domain.User;
 import com.davidanastasov.emtlabproject.model.enumerations.Role;
 import com.davidanastasov.emtlabproject.model.exceptions.InvalidArgumentsException;
 import com.davidanastasov.emtlabproject.model.exceptions.InvalidUsernameOrPasswordException;
 import com.davidanastasov.emtlabproject.model.exceptions.UserNotFoundException;
 import com.davidanastasov.emtlabproject.model.exceptions.UsernameAlreadyExistsException;
+import com.davidanastasov.emtlabproject.repository.BookRentalRepository;
 import com.davidanastasov.emtlabproject.repository.UserRepository;
 import com.davidanastasov.emtlabproject.service.domain.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final BookRentalRepository bookRentalRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -59,5 +62,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public List<BookRental> getAllUserRentals(String username) {
+        var user = userRepository.findByUsername(username);
+
+        if (user.isEmpty()) {
+            throw new UserNotFoundException(username);
+        }
+
+        return user.get().getRentals();
     }
 }

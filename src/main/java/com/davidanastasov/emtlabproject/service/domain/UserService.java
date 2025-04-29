@@ -1,5 +1,6 @@
 package com.davidanastasov.emtlabproject.service.domain;
 
+import com.davidanastasov.emtlabproject.model.domain.BookRental;
 import com.davidanastasov.emtlabproject.model.domain.User;
 import com.davidanastasov.emtlabproject.model.enumerations.Role;
 
@@ -14,4 +15,6 @@ public interface UserService {
     User login(String username, String password);
 
     Optional<User> findByUsername(String username);
+
+    List<BookRental> getAllUserRentals(String username);
 }

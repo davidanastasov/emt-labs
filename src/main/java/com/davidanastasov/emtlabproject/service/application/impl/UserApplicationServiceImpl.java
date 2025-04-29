@@ -1,10 +1,7 @@
 package com.davidanastasov.emtlabproject.service.application.impl;
 
 import com.davidanastasov.emtlabproject.model.domain.User;
-import com.davidanastasov.emtlabproject.model.dto.CreateUserDTO;
-import com.davidanastasov.emtlabproject.model.dto.LoginResponseDTO;
-import com.davidanastasov.emtlabproject.model.dto.LoginUserDTO;
-import com.davidanastasov.emtlabproject.model.dto.UserDTO;
+import com.davidanastasov.emtlabproject.model.dto.*;
 import com.davidanastasov.emtlabproject.security.JwtHelper;
 import com.davidanastasov.emtlabproject.service.application.UserApplicationService;
 import com.davidanastasov.emtlabproject.service.domain.UserService;
@@ -48,5 +45,10 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     public Optional<UserDTO> loginUser(LoginUserDTO user) {
         var savedUser = userService.login(user.username(), user.password());
         return Optional.of(UserDTO.from(savedUser));
+    }
+
+    @Override
+    public List<BookRentalDTO> getAllUserRentals(String username) {
+        return BookRentalDTO.from(userService.getAllUserRentals(username));
     }
 }

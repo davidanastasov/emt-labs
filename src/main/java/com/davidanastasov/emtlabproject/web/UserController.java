@@ -1,9 +1,7 @@
 package com.davidanastasov.emtlabproject.web;
 
-import com.davidanastasov.emtlabproject.model.dto.CreateUserDTO;
-import com.davidanastasov.emtlabproject.model.dto.LoginResponseDTO;
-import com.davidanastasov.emtlabproject.model.dto.LoginUserDTO;
-import com.davidanastasov.emtlabproject.model.dto.UserDTO;
+import com.davidanastasov.emtlabproject.model.domain.User;
+import com.davidanastasov.emtlabproject.model.dto.*;
 import com.davidanastasov.emtlabproject.model.exceptions.InvalidUsernameOrPasswordException;
 import com.davidanastasov.emtlabproject.service.application.UserApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -92,5 +91,15 @@ public class UserController {
     @GetMapping("/logout")
     public void logout(HttpServletRequest request) {
         request.getSession().invalidate();
+    }
+
+    @GetMapping("/rentals")
+    public List<BookRentalDTO> getUserRentals(Authentication authentication) {
+        try {
+            var user = (User) authentication.getPrincipal();
+            return userApplicationService.getAllUserRentals(user.getUsername());
+        } catch (RuntimeException exception) {
+            return null;
+        }
     }
 }

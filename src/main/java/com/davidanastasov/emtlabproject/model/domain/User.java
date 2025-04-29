@@ -31,6 +31,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Wishlist> wishlists;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<BookRental> rentals;
+
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;
     private boolean isCredentialsNonExpired = true;

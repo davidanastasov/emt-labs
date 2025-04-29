@@ -47,6 +47,8 @@ public class JwtSecurityWebConfig {
                 .authorizeHttpRequests(authorizeHttpRequestsCustomizer ->
                         authorizeHttpRequestsCustomizer
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                                .requestMatchers("/api/user/fetch").hasAuthority(Role.ADMIN.getAuthority())
+                                .requestMatchers("/api/user/rentals").authenticated()
                                 .requestMatchers("/api/user/**").permitAll()
                                 .requestMatchers("/api/books/**").hasAnyAuthority(Role.ADMIN.getAuthority(), Role.LIBRARIAN.getAuthority())
                                 .requestMatchers("/api/authors/**").hasAuthority(Role.ADMIN.getAuthority())
