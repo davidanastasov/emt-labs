@@ -25,6 +25,11 @@ export * from "./configuration";
 
 const config = new Configuration({
   basePath: "http://localhost:8080",
+  baseOptions: {
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJBRE1JTiJdLCJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NzA2ODk2OSwiZXhwIjoxNzQ3OTMyOTY5fQ.-Kva2kxekL_NaZ62ED-dqHyIg5amrlAhK2pYiD5HmLY`,
+    },
+  },
 });
 
 export const countriesApi = CountryManagementApiFactory(config);
