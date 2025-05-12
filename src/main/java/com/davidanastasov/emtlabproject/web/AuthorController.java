@@ -52,7 +52,7 @@ public class AuthorController {
 
     @Operation(summary = "Create a new author", description = "Saves a new author to the database")
     @PostMapping
-    public ResponseEntity<AuthorDTO> save(@RequestBody CreateAuthorDTO author) {
+    public ResponseEntity<AuthorDTO> saveAuthor(@RequestBody CreateAuthorDTO author) {
         return authorApplicationService.save(author)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
@@ -60,7 +60,7 @@ public class AuthorController {
 
     @Operation(summary = "Update an existing author", description = "Updates an author's details")
     @PatchMapping("{id}")
-    public ResponseEntity<AuthorDTO> update(@PathVariable Long id, @RequestBody UpdateAuthorDTO author) {
+    public ResponseEntity<AuthorDTO> updateAuthor(@PathVariable Long id, @RequestBody UpdateAuthorDTO author) {
         return authorApplicationService.update(id, author)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.notFound().build());

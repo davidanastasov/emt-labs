@@ -44,7 +44,7 @@ public class BookController {
 
     @Operation(summary = "Create a new book", description = "Saves a new book to the database")
     @PostMapping
-    public ResponseEntity<BookDTO> save(@RequestBody CreateBookDTO book) {
+    public ResponseEntity<BookDTO> saveBook(@RequestBody CreateBookDTO book) {
         return bookApplicationService.save(book)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
@@ -52,7 +52,7 @@ public class BookController {
 
     @Operation(summary = "Update an existing book", description = "Updates a book's details")
     @PatchMapping("{id}")
-    public ResponseEntity<BookDTO> update(@PathVariable Long id, @RequestBody UpdateBookDTO book) {
+    public ResponseEntity<BookDTO> updateBook(@PathVariable Long id, @RequestBody UpdateBookDTO book) {
         return bookApplicationService.update(id, book)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.notFound().build());

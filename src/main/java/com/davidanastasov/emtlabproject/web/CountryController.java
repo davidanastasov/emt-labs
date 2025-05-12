@@ -36,7 +36,7 @@ public class CountryController {
 
     @Operation(summary = "Create a new country", description = "Saves a new country to the database")
     @PostMapping
-    public ResponseEntity<CountryDTO> save(@RequestBody CreateCountryDTO country) {
+    public ResponseEntity<CountryDTO> saveCountry(@RequestBody CreateCountryDTO country) {
         return countryApplicationService.save(country)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
@@ -44,7 +44,7 @@ public class CountryController {
 
     @Operation(summary = "Update an existing country", description = "Updates a country's details")
     @PatchMapping("{id}")
-    public ResponseEntity<CountryDTO> update(@PathVariable Long id, @RequestBody UpdateCountryDTO country) {
+    public ResponseEntity<CountryDTO> updateCountry(@PathVariable Long id, @RequestBody UpdateCountryDTO country) {
         return countryApplicationService.update(id, country)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.notFound().build());
