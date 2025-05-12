@@ -11,42 +11,42 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { type AuthorDTO, type CreateAuthorDTO } from "../../api-client";
-import useCountries from "../../data/countries";
+import {
+  CreateCountryDTOContinentEnum,
+  type CountryDTO,
+  type CreateCountryDTO,
+} from "../../api-client";
 
-const initialFormData: CreateAuthorDTO = {
+const initialFormData: CreateCountryDTO = {
   name: "",
-  surname: "",
-  countryId: undefined,
+  continent: undefined,
 };
 
-interface AuthorDialogProps {
+interface CountryDialogProps {
   open: boolean;
-  author?: AuthorDTO;
+  country?: CountryDTO;
   onClose: () => void;
   onSubmit: (data: typeof initialFormData) => void;
 }
 
-export default function AuthorDialog({
+export default function CountryDialog({
   open,
-  author,
+  country,
   onClose,
   onSubmit,
-}: AuthorDialogProps) {
-  const isEditing = !!author;
-  const { countries } = useCountries();
+}: CountryDialogProps) {
+  const isEditing = !!country;
 
-  const [formData, setFormData] = useState<CreateAuthorDTO>(initialFormData);
+  const [formData, setFormData] = useState<CreateCountryDTO>(initialFormData);
 
   useEffect(() => {
-    if (author) {
+    if (country) {
       setFormData({
-        name: author.name,
-        surname: author.surname,
-        countryId: author.country?.id,
+        name: country.name,
+        continent: country.continent,
       });
     }
-  }, [author]);
+  }, [country]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -61,7 +61,7 @@ export default function AuthorDialog({
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>{isEditing ? "Update Author" : "Add Author"}</DialogTitle>
+      <DialogTitle>{isEditing ? "Update Country" : "Add Country"}</DialogTitle>
       <DialogContent>
         <TextField
           margin="dense"
@@ -72,27 +72,18 @@ export default function AuthorDialog({
           fullWidth
         />
 
-        <TextField
-          margin="dense"
-          label="Surname"
-          name="surname"
-          value={formData.surname}
-          onChange={handleChange}
-          fullWidth
-        />
-
         <FormControl fullWidth margin="dense">
-          <InputLabel>Country</InputLabel>
+          <InputLabel>Continent</InputLabel>
           <Select
-            name="countryId"
-            value={formData.countryId}
+            name="continent"
+            value={formData.continent}
             onChange={handleChange}
-            label="Country"
+            label="Continent"
             variant="outlined"
           >
-            {countries.map((country) => (
-              <MenuItem key={country.id} value={country.id}>
-                {country.name}
+            {Object.values(CreateCountryDTOContinentEnum).map((continent) => (
+              <MenuItem key={continent} value={continent}>
+                {continent}
               </MenuItem>
             ))}
           </Select>
