@@ -1,6 +1,6 @@
 import useCountries from "../data/countries";
 import CountryCard from "../components/countries/CountryCard";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import CountryDialog from "../components/countries/CountryDialog";
 import { useState } from "react";
 import { Plus } from "lucide-react";
@@ -16,10 +16,6 @@ export default function CountriesPage() {
 
   function handleCloseDialog() {
     setIsAddCountryDialogOpen(false);
-  }
-
-  if (loading) {
-    return <p>Loading...</p>;
   }
 
   return (
@@ -47,17 +43,21 @@ export default function CountriesPage() {
         </Button>
       </Box>
 
-      <Grid container spacing={2}>
-        {countries.map((country) => (
-          <Grid key={country.id} size={{ xs: 12, sm: 6, md: 4 }}>
-            <CountryCard
-              country={country}
-              onEdit={onEdit}
-              onDelete={onDelete}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      {loading ? (
+        <CircularProgress sx={{ display: "block", margin: "auto" }} />
+      ) : (
+        <Grid container spacing={2}>
+          {countries.map((country) => (
+            <Grid key={country.id} size={{ xs: 12, sm: 6, md: 4 }}>
+              <CountryCard
+                country={country}
+                onEdit={onEdit}
+                onDelete={onDelete}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      )}
 
       <CountryDialog
         open={isAddCountryDialogOpen}

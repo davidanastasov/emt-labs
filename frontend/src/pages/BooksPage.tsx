@@ -1,5 +1,5 @@
 import useBooks from "../data/books";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import BookDialog from "../components/books/BookDialog";
 import { useState } from "react";
 import BooksTable from "../components/books/BooksTable";
@@ -37,10 +37,6 @@ export default function BooksPage() {
 
   const selectedBook = books.find((book) => book.id === selectedBookId);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
   return (
     <>
       <Box
@@ -66,7 +62,15 @@ export default function BooksPage() {
         </Button>
       </Box>
 
-      <BooksTable books={books} onEdit={handleEditClick} onDelete={onDelete} />
+      {loading ? (
+        <CircularProgress sx={{ display: "block", margin: "auto" }} />
+      ) : (
+        <BooksTable
+          books={books}
+          onEdit={handleEditClick}
+          onDelete={onDelete}
+        />
+      )}
 
       <BookDialog
         open={isAddBookDialogOpen}

@@ -1,6 +1,6 @@
 import useAuthors from "../data/authors";
 import AuthorCard from "../components/authors/AuthorCard";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import AuthorDialog from "../components/authors/AuthorDialog";
 import { useState } from "react";
 import { Plus } from "lucide-react";
@@ -16,10 +16,6 @@ export default function AuthorsPage() {
 
   function handleCloseDialog() {
     setIsAddAuthorDialogOpen(false);
-  }
-
-  if (loading) {
-    return <p>Loading...</p>;
   }
 
   return (
@@ -47,13 +43,17 @@ export default function AuthorsPage() {
         </Button>
       </Box>
 
-      <Grid container spacing={2}>
-        {authors.map((author) => (
-          <Grid key={author.id} size={{ xs: 12, sm: 6, md: 4 }}>
-            <AuthorCard author={author} onEdit={onEdit} onDelete={onDelete} />
-          </Grid>
-        ))}
-      </Grid>
+      {loading ? (
+        <CircularProgress sx={{ display: "block", margin: "auto" }} />
+      ) : (
+        <Grid container spacing={2}>
+          {authors.map((author) => (
+            <Grid key={author.id} size={{ xs: 12, sm: 6, md: 4 }}>
+              <AuthorCard author={author} onEdit={onEdit} onDelete={onDelete} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
 
       <AuthorDialog
         open={isAddAuthorDialogOpen}
