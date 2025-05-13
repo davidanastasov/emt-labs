@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface BookApplicationService {
     List<BookDTO> findAll();
 
+    List<BookDTO> findBooksByCountryId(Long id);
+
     Optional<BookDTO> findById(Long id);
 
     Optional<BookDTO> save(CreateBookDTO book);

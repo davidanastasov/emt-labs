@@ -77,4 +77,25 @@ const useCountries = () => {
   return { ...state, onAdd, onEdit, onDelete };
 };
 
+export const useCountry = (countryId: number) => {
+  const [country, setCountry] = useState<CountryDTO | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const fetchCountry = useCallback((id: number) => {
+    countriesApi
+      .getCountryById(id)
+      .then((response) => {
+        setCountry(response.data);
+        setLoading(false);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  useEffect(() => {
+    fetchCountry(countryId);
+  }, [fetchCountry, countryId]);
+
+  return { country, loading, fetchCountry };
+};
+
 export default useCountries;

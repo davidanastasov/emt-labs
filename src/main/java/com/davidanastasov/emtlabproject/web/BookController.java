@@ -33,6 +33,12 @@ public class BookController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Get books by country ID", description = "Fetches a list of books associated with a specific country ID")
+    @GetMapping("by-country/{id}")
+    public List<BookDTO> findBooksByCountryId(@PathVariable Long id) {
+        return bookApplicationService.findBooksByCountryId(id);
+    }
+
     @Operation(
             summary = "Get book counts per author",
             description = "Retrieves a list of authors along with the number of books they have authored."

@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface BookService {
     List<Book> findAll();
 
+    List<Book> findBooksByCountryId(Long id);
+
     Optional<Book> findById(Long id);
 
     Optional<Book> save(Book book);

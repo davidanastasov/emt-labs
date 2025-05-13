@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import type { CountryDTO, UpdateCountryDTO } from "../../api-client";
 import { useState } from "react";
 import CountryDialog from "./CountryDialog";
+import { Link } from "react-router";
 
 interface CountryCardProps {
   country: CountryDTO;
@@ -32,6 +33,10 @@ export default function CountryCard({
           </Typography>
         </CardContent>
         <CardActions>
+          <Link to={`/countries/${country.id}`}>
+            <Button size="small">View</Button>
+          </Link>
+
           <Button size="small" onClick={() => setIsEditCountryDialogOpen(true)}>
             Edit
           </Button>

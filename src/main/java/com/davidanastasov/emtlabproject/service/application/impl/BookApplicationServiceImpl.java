@@ -29,6 +29,11 @@ public class BookApplicationServiceImpl implements BookApplicationService {
     }
 
     @Override
+    public List<BookDTO> findBooksByCountryId(Long id) {
+        return BookDTO.from(bookService.findBooksByCountryId(id));
+    }
+
+    @Override
     public Optional<BookDTO> findById(Long id) {
         return bookService.findById(id).map(BookDTO::from);
     }

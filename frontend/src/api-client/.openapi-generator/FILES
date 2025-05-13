@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 api.ts
 base.ts
 common.ts
@@ -29,4 +28,3 @@ docs/UserDTO.md
 docs/WishlistAPIApi.md
 docs/WishlistDTO.md
 git_push.sh
-index.ts

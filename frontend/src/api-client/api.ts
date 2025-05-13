@@ -1193,6 +1193,44 @@ export const BookManagementApiAxiosParamCreator = function (configuration?: Conf
             };
         },
         /**
+         * Fetches a list of books associated with a specific country ID
+         * @summary Get books by country ID
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findBooksByCountryId: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('findBooksByCountryId', 'id', id)
+            const localVarPath = `/api/books/by-country/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Returns a list of all books
          * @summary Get all books
          * @param {*} [options] Override http request option.
@@ -1556,6 +1594,19 @@ export const BookManagementApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Fetches a list of books associated with a specific country ID
+         * @summary Get books by country ID
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async findBooksByCountryId(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BookDTO>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.findBooksByCountryId(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BookManagementApi.findBooksByCountryId']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Returns a list of all books
          * @summary Get all books
          * @param {*} [options] Override http request option.
@@ -1696,6 +1747,16 @@ export const BookManagementApiFactory = function (configuration?: Configuration,
             return localVarFp.findAllRentalsById(id, options).then((request) => request(axios, basePath));
         },
         /**
+         * Fetches a list of books associated with a specific country ID
+         * @summary Get books by country ID
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findBooksByCountryId(id: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<BookDTO>> {
+            return localVarFp.findBooksByCountryId(id, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Returns a list of all books
          * @summary Get all books
          * @param {*} [options] Override http request option.
@@ -1810,6 +1871,18 @@ export class BookManagementApi extends BaseAPI {
      */
     public findAllRentalsById(id: number, options?: RawAxiosRequestConfig) {
         return BookManagementApiFp(this.configuration).findAllRentalsById(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Fetches a list of books associated with a specific country ID
+     * @summary Get books by country ID
+     * @param {number} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BookManagementApi
+     */
+    public findBooksByCountryId(id: number, options?: RawAxiosRequestConfig) {
+        return BookManagementApiFp(this.configuration).findBooksByCountryId(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
