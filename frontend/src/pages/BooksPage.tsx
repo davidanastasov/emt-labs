@@ -1,13 +1,41 @@
 import useBooks from "../data/books";
-import BookCard from "../components/books/BookCard";
-import { Button, Grid } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import BookDialog from "../components/books/BookDialog";
 import { useState } from "react";
+import BooksTable from "../components/books/BooksTable";
+import { Plus } from "lucide-react";
+import type { CreateBookDTO, UpdateBookDTO } from "~/api-client";
 
 export default function BooksPage() {
   const { books, loading, onAdd, onEdit, onDelete } = useBooks();
 
   const [isAddBookDialogOpen, setIsAddBookDialogOpen] = useState(false);
+  const [selectedBookId, setSelectedBookId] = useState<number | null>(null);
+
+  function handleAddClick() {
+    setIsAddBookDialogOpen(true);
+  }
+
+  function handleEditClick(id: number) {
+    setSelectedBookId(id);
+    setIsAddBookDialogOpen(true);
+  }
+
+  function handleSubmit(data: CreateBookDTO | UpdateBookDTO) {
+    if (selectedBookId) {
+      onEdit(selectedBookId, data);
+    } else {
+      onAdd(data);
+    }
+    setIsAddBookDialogOpen(false);
+    setSelectedBookId(null);
+  }
+
+  function handleCloseDialog() {
+    setIsAddBookDialogOpen(false);
+  }
+
+  const selectedBook = books.find((book) => book.id === selectedBookId);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -15,24 +43,36 @@ export default function BooksPage() {
 
   return (
     <>
-      <h1>Books</h1>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 4,
+        }}
+      >
+        <Typography variant="h4" component="h1">
+          Books
+        </Typography>
 
-      <Button variant="contained" onClick={() => setIsAddBookDialogOpen(true)}>
-        Add Book
-      </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<Plus size={20} />}
+          onClick={handleAddClick}
+          sx={{ display: { xs: "none", sm: "flex" } }}
+        >
+          Add Book
+        </Button>
+      </Box>
 
-      <Grid container spacing={2}>
-        {books.map((book) => (
-          <Grid key={book.id} size={{ xs: 12, sm: 6, md: 4 }}>
-            <BookCard book={book} onEdit={onEdit} onDelete={onDelete} />
-          </Grid>
-        ))}
-      </Grid>
+      <BooksTable books={books} onEdit={handleEditClick} onDelete={onDelete} />
 
       <BookDialog
         open={isAddBookDialogOpen}
-        onSubmit={onAdd}
-        onClose={() => setIsAddBookDialogOpen(false)}
+        book={selectedBook}
+        onSubmit={handleSubmit}
+        onClose={handleCloseDialog}
       />
     </>
   );

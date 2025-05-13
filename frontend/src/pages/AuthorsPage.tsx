@@ -1,13 +1,22 @@
 import useAuthors from "../data/authors";
 import AuthorCard from "../components/authors/AuthorCard";
-import { Button, Grid } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import AuthorDialog from "../components/authors/AuthorDialog";
 import { useState } from "react";
+import { Plus } from "lucide-react";
 
 export default function AuthorsPage() {
   const { authors, loading, onAdd, onEdit, onDelete } = useAuthors();
 
   const [isAddAuthorDialogOpen, setIsAddAuthorDialogOpen] = useState(false);
+
+  function handleAddClick() {
+    setIsAddAuthorDialogOpen(true);
+  }
+
+  function handleCloseDialog() {
+    setIsAddAuthorDialogOpen(false);
+  }
 
   if (loading) {
     return <p>Loading...</p>;
@@ -15,14 +24,28 @@ export default function AuthorsPage() {
 
   return (
     <>
-      <h1>Authors</h1>
-
-      <Button
-        variant="contained"
-        onClick={() => setIsAddAuthorDialogOpen(true)}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 4,
+        }}
       >
-        Add Author
-      </Button>
+        <Typography variant="h4" component="h1">
+          Authors
+        </Typography>
+
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<Plus size={20} />}
+          onClick={handleAddClick}
+          sx={{ display: { xs: "none", sm: "flex" } }}
+        >
+          Add Author
+        </Button>
+      </Box>
 
       <Grid container spacing={2}>
         {authors.map((author) => (
@@ -35,7 +58,7 @@ export default function AuthorsPage() {
       <AuthorDialog
         open={isAddAuthorDialogOpen}
         onSubmit={onAdd}
-        onClose={() => setIsAddAuthorDialogOpen(false)}
+        onClose={handleCloseDialog}
       />
     </>
   );

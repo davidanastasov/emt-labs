@@ -1,13 +1,22 @@
 import useCountries from "../data/countries";
 import CountryCard from "../components/countries/CountryCard";
-import { Button, Grid } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import CountryDialog from "../components/countries/CountryDialog";
 import { useState } from "react";
+import { Plus } from "lucide-react";
 
 export default function CountriesPage() {
   const { countries, loading, onAdd, onEdit, onDelete } = useCountries();
 
   const [isAddCountryDialogOpen, setIsAddCountryDialogOpen] = useState(false);
+
+  function handleAddClick() {
+    setIsAddCountryDialogOpen(true);
+  }
+
+  function handleCloseDialog() {
+    setIsAddCountryDialogOpen(false);
+  }
 
   if (loading) {
     return <p>Loading...</p>;
@@ -15,14 +24,28 @@ export default function CountriesPage() {
 
   return (
     <>
-      <h1>Countries</h1>
-
-      <Button
-        variant="contained"
-        onClick={() => setIsAddCountryDialogOpen(true)}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 4,
+        }}
       >
-        Add Country
-      </Button>
+        <Typography variant="h4" component="h1">
+          Countries
+        </Typography>
+
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<Plus size={20} />}
+          onClick={handleAddClick}
+          sx={{ display: { xs: "none", sm: "flex" } }}
+        >
+          Add Country
+        </Button>
+      </Box>
 
       <Grid container spacing={2}>
         {countries.map((country) => (
@@ -39,7 +62,7 @@ export default function CountriesPage() {
       <CountryDialog
         open={isAddCountryDialogOpen}
         onSubmit={onAdd}
-        onClose={() => setIsAddCountryDialogOpen(false)}
+        onClose={handleCloseDialog}
       />
     </>
   );

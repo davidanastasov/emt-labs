@@ -18,7 +18,7 @@ export default function Layout() {
         maxWidth="lg"
         sx={{
           flexGrow: 1,
-          py: 2,
+          py: 4,
         }}
       >
         <Outlet />
