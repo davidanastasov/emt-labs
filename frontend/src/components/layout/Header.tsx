@@ -1,4 +1,6 @@
-import { Link } from "react-router";
+import { AppBar, Button, Toolbar, Typography } from "@mui/material";
+import { BookOpen } from "lucide-react";
+import { Link, NavLink } from "react-router";
 
 interface NavLink {
   path: string;
@@ -14,18 +16,43 @@ const navLinks: NavLink[] = [
 
 export default function Header() {
   return (
-    <header>
-      <h3>Book Library</h3>
+    <AppBar component="nav" position="static">
+      <Toolbar>
+        <Typography
+          variant="h6"
+          component={Link}
+          to="/"
+          sx={{
+            flexGrow: 1,
+            color: "white",
+            textDecoration: "none",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <BookOpen size={24} style={{ marginRight: "8px" }} />
+          Book Library
+        </Typography>
 
-      <nav>
-        <ul>
+        <nav>
           {navLinks.map((navLink) => (
-            <Link key={navLink.label} to={navLink.path}>
-              <li>{navLink.label}</li>
-            </Link>
+            <Button
+              key={navLink.label}
+              component={NavLink}
+              to={navLink.path}
+              sx={{
+                color: "#fff",
+                mx: 1,
+                "&.active": {
+                  bgcolor: "rgba(255, 255, 255, 0.1)",
+                },
+              }}
+            >
+              {navLink.label}
+            </Button>
           ))}
-        </ul>
-      </nav>
-    </header>
+        </nav>
+      </Toolbar>
+    </AppBar>
   );
 }
